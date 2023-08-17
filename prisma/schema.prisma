@@ -1,0 +1,1328 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL1")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_autoresponder {
+  AutoRespondId Int    @id @default(autoincrement())
+  Subject       String @db.VarChar(200)
+  Duration      Int
+  Limitation    Int
+  Message       String @db.Text
+  ContentsHtml  String @db.Text
+  Status        Int    @default(1) @db.TinyInt
+}
+
+model arm_banned {
+  BannedId  Int                 @id @default(autoincrement())
+  Ip        String              @db.VarChar(20)
+  Status    arm_banned_Status
+  DateAdded DateTime            @db.DateTime(0)
+  isDelete  arm_banned_isDelete @default(dbgenerated("0"))
+}
+
+model arm_bannerimage {
+  banner_id    Int    @id @default(autoincrement())
+  banner_name  String @db.Text
+  banner_image String @db.Text
+  description  String @db.Text
+  status       Int    @db.TinyInt
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_binaryhyip {
+  MatrixId          Int
+  MemberId          Int
+  DirectId          Int
+  SpilloverId       Int
+  LevelCount        Int
+  TotalMemberCount  Int
+  MemberCount       Int
+  Status            Boolean
+  LeftId            Int
+  RightId           Int
+  LeftPv            Int
+  RightPv           Int
+  LeftCount         Int
+  LeftPairCount     Int
+  RightCount        Int
+  RightPairCount    Int
+  leftdowncount     String   @db.VarChar(40)
+  rightdowncount    String   @db.VarChar(40)
+  LeftCarryForward  Int
+  RightCarryForward Int
+  test              Int
+  DateAdded         DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_binaryhyip_arm_members1_idx")
+  @@ignore
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_binarymatrix {
+  MatrixId         Int      @id @default(autoincrement())
+  MemberId         Int
+  DirectId         Int
+  SpilloverId      Int
+  LevelCount       Int
+  TotalMemberCount Int
+  MemberCount      Int
+  Status           Boolean
+  LeftId           Int
+  RightId          Int
+  LeftPv           Decimal  @db.Decimal(15, 2)
+  RightPv          Decimal  @db.Decimal(15, 2)
+  LeftCount        Int
+  LeftPairCount    Int
+  RightCount       Int
+  RightPairCount   Int
+  leftdowncount    String   @db.VarChar(40)
+  rightdowncount   String   @db.VarChar(40)
+  DateAdded        DateTime @db.DateTime(0)
+  LeftQv           Decimal  @db.Decimal(15, 2)
+  RightQv          Decimal  @db.Decimal(15, 2)
+
+  @@index([MemberId], map: "fk_arm_binarymatrix_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_binarymatrix_temporal {
+  MatrixId         Int      @id @default(autoincrement())
+  MemberId         Int
+  DirectId         Int
+  SpilloverId      Int
+  LevelCount       Int
+  TotalMemberCount Int
+  MemberCount      Int
+  Status           Boolean
+  LeftId           Int
+  RightId          Int
+  LeftPv           Decimal  @db.Decimal(15, 2)
+  RightPv          Decimal  @db.Decimal(15, 2)
+  LeftCount        Int
+  LeftPairCount    Int
+  RightCount       Int
+  RightPairCount   Int
+  leftdowncount    String   @db.VarChar(40)
+  rightdowncount   String   @db.VarChar(40)
+  DateAdded        DateTime @db.DateTime(0)
+  LeftQv           Decimal  @db.Decimal(15, 2)
+  RightQv          Decimal  @db.Decimal(15, 2)
+}
+
+model arm_bitcoin_data {
+  id           Int      @id @default(autoincrement())
+  address      String   @db.VarChar(100)
+  UserId       Int
+  OrderId      Int
+  Total        Decimal  @db.Decimal(10, 2)
+  label        String   @db.VarChar(150)
+  post_content String   @db.Text
+  DateAdded    DateTime @default(now()) @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_boardmatrix {
+  BoardMemberId         Int      @id @default(autoincrement())
+  BoardId               Int      @db.TinyInt
+  MemberId              Int
+  DirectId              Int
+  SpilloverId           Int
+  LevelCount            Int
+  MemberCount           Int
+  Totalmembers          Int
+  Status                Boolean  @default(true)
+  ReentryStatus         Int      @db.TinyInt
+  NextReentryStatus     Int      @db.TinyInt
+  BoardCommissionStatus Int      @default(0) @db.TinyInt
+  DateAdded             DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_boardmatrix_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_boardplan {
+  PackageId              Int               @id @default(autoincrement())
+  PackageName            String            @db.VarChar(100)
+  PackageFee             Decimal           @db.Decimal(10, 2)
+  ReentryBoardStatus     Int               @db.TinyInt
+  ReentryNextBoardStatus Int               @db.TinyInt
+  ReentryNextBoard       Int               @db.TinyInt
+  FollowSponsor          Int
+  BoardWidth             Int
+  BoardDepth             Int
+  Status                 Int               @default(1)
+  OwnCommission          Decimal           @db.Decimal(10, 2)
+  DirectCommission       Decimal           @db.Decimal(10, 2)
+  BoardCommission        Decimal           @db.Decimal(10, 2)
+  LevelCommission        String            @db.Text
+  ProductLevelCommission String            @db.Text
+  upgradelevel           String            @db.Text
+  arm_requestepin        arm_requestepin[]
+}
+
+model arm_category {
+  CategoryId      Int                   @id @default(autoincrement())
+  Category        String                @db.VarChar(50)
+  Image           String?               @db.VarChar(255)
+  Description     String                @db.Text
+  ParentId        Int                   @default(0)
+  SortOrder       Int                   @default(0)
+  Status          Boolean
+  DateAdded       DateTime              @db.DateTime(0)
+  DateModified    DateTime              @db.DateTime(0)
+  isDelete        arm_category_isDelete @default(dbgenerated("0"))
+  idgrupo         Int?                  @default(0)
+  arm_product     arm_product[]
+  arm_subcategory arm_subcategory[]
+
+  @@index([ParentId], map: "parentId")
+}
+
+model arm_ciudades {
+  id_ciudad       Int    @id @default(autoincrement())
+  pais_id         Int
+  id_departamento Int
+  ciudad          String @db.VarChar(250)
+  estado          Int?
+  codigo          Int?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_cms_page {
+  pageID          Int          @id @default(autoincrement())
+  pageTitle       String       @db.Text
+  pageUrl         String       @db.Text
+  navTitle        String       @db.Text
+  LanguageId      Int
+  pageContent     String       @db.Text
+  pageContentHTML String       @db.Text
+  pageKeywords    String       @db.Text
+  pageDescription String       @db.Text
+  Status          Int
+  pageCreated     DateTime     @default(now()) @db.Timestamp(0)
+  isDelete        Int
+  arm_language    arm_language @relation(fields: [LanguageId], references: [LanguageId], onDelete: NoAction, onUpdate: NoAction, map: "arm_cms_page_ibfk_1")
+
+  @@index([LanguageId], map: "fk_arm_cms_page_arm_language1_idx")
+}
+
+model arm_communiques {
+  Id            Int      @id @default(autoincrement())
+  idgrupo       Int
+  Title         String   @db.Text
+  Description   String   @db.Text
+  Content       String   @db.Text
+  Status        Int
+  Section       Int
+  Officer       Int
+  Priority      Int
+  Dateadded     DateTime @db.DateTime(0)
+  Ext_coverimg  String?  @db.Text
+  Coverimg_type Int?     @default(0)
+  Encargado     Int?
+  Version       Int?     @default(0)
+  Datemodified  DateTime @db.DateTime(0)
+  Ultimaedicion String?  @db.Text
+  contrato      Int?     @default(0)
+}
+
+model arm_communiques_types {
+  Id     Int     @id @default(autoincrement())
+  tipo   String? @db.VarChar(255)
+  estado String? @db.VarChar(255)
+}
+
+model arm_compras_history {
+  id           Int       @id @default(autoincrement())
+  CouponId     String    @db.VarChar(100)
+  Imei         String    @db.VarChar(100)
+  producto     String    @db.VarChar(100)
+  valor        Int
+  fecha        DateTime? @default(now()) @db.Timestamp(0)
+  timeDispo    Int?
+  status       Int?      @default(1)
+  concepto     String?   @default("pago") @db.VarChar(100)
+  receptor     String?   @default("") @db.VarChar(100)
+  id_validador String?   @default("NA") @db.VarChar(100)
+}
+
+model arm_country {
+  country_id        Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(128)
+  iso_code_2        String              @db.VarChar(2)
+  iso_code_3        String              @db.VarChar(3)
+  address_format    String              @db.Text
+  postcode_required Boolean
+  status            Boolean             @default(true)
+  arm_departamentos arm_departamentos[]
+}
+
+model arm_coupon {
+  CouponId            Int                   @id @default(autoincrement())
+  CouponName          String                @db.VarChar(255)
+  CouponCode          String                @db.VarChar(20)
+  CouponType          String                @db.Char(1)
+  StartDate           DateTime              @db.DateTime(0)
+  EndDate             DateTime              @db.DateTime(0)
+  UseUser             Int
+  Total               Decimal               @db.Decimal(10, 2)
+  UsedTotal           Int
+  Status              Int
+  DateAdded           DateTime              @db.DateTime(0)
+  isDelete            Int                   @default(0)
+  arm_coupon_category arm_coupon_category[]
+  arm_coupon_history  arm_coupon_history[]
+  arm_coupon_product  arm_coupon_product[]
+}
+
+model arm_coupon_category {
+  CouponCategoryId Int             @id @default(autoincrement())
+  CouponId         Int
+  CategoryId       Int
+  arm_coupon       arm_coupon      @relation(fields: [CouponId], references: [CouponId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_coupon_category_arm_coupon1")
+  arm_subcategory  arm_subcategory @relation(fields: [CategoryId], references: [SubCatId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_coupon_category_arm_subcategory1")
+
+  @@index([CouponId], map: "fk_arm_coupon_category_arm_coupon1_idx")
+  @@index([CategoryId], map: "fk_arm_coupon_category_arm_subcategory1_idx")
+}
+
+model arm_coupon_history {
+  HistoryId  Int        @id @default(autoincrement())
+  CouponId   Int
+  OrderId    Int
+  CustomerId Int
+  Amount     Decimal    @db.Decimal(15, 4)
+  DateAdded  DateTime   @db.DateTime(0)
+  arm_coupon arm_coupon @relation(fields: [CouponId], references: [CouponId], onDelete: NoAction, onUpdate: NoAction, map: "arm_coupon_history_ibfk_1")
+
+  @@index([CouponId], map: "fk_arm_coupon_history_arm_coupon1_idx")
+  @@index([CouponId], map: "fk_arm_coupon_history_arm_discount1_idx")
+  @@index([OrderId], map: "fk_arm_coupon_history_arm_order1_idx")
+}
+
+model arm_coupon_product {
+  CouponProductId Int         @default(autoincrement())
+  CouponId        Int
+  ProductId       Int
+  arm_coupon      arm_coupon  @relation(fields: [CouponId], references: [CouponId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_coupon_product_arm_coupon1")
+  arm_product     arm_product @relation(fields: [ProductId], references: [ProductId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_coupon_product_arm_product1")
+
+  @@id([CouponProductId, CouponId, ProductId])
+  @@index([CouponId], map: "fk_arm_coupon_product_arm_coupon1_idx")
+  @@index([ProductId], map: "fk_arm_coupon_product_arm_product1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_currency {
+  CurrencyId     Int         @id @default(autoincrement())
+  CurrencyName   String      @db.VarChar(50)
+  CurrencyCode   String      @db.VarChar(50)
+  CurrencySymbol String      @db.VarChar(50)
+  CurrencyValue  Decimal     @db.Decimal(15, 4)
+  Status         Int         @db.TinyInt
+  DateAdded      DateTime    @db.DateTime(0)
+  DateModified   DateTime    @db.DateTime(0)
+  arm_order      arm_order[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_customfields {
+  CustomFieldId      Int      @id @default(autoincrement())
+  CustomLabel        String   @db.VarChar(50)
+  CustomName         String   @db.VarChar(50)
+  CustomType         String   @db.VarChar(50)
+  CustomValue        String   @db.Text
+  CustomFieldRequire Int
+  Page               String   @db.VarChar(50)
+  Status             Int      @default(1) @db.TinyInt
+  SortOrder          Int      @db.TinyInt
+  DateAdded          DateTime @db.DateTime(0)
+  DateModified       DateTime @db.DateTime(0)
+}
+
+model arm_departamentos {
+  id_departamento Int              @id @default(autoincrement()) @db.UnsignedInt
+  departamento    String           @default("") @db.VarChar(255)
+  estado          String?          @default("1") @db.Char(1)
+  pais_id         Int?
+  codigo          Int?
+  arm_country     arm_country?     @relation(fields: [pais_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_departamentos_arm_country1")
+  arm_municipios  arm_municipios[]
+
+  @@index([pais_id], map: "fk_arm_departamentos_arm_country1_idx")
+}
+
+model arm_discount {
+  CouponId    Int      @id @default(autoincrement())
+  CouponName  String   @db.VarChar(50)
+  CouponCode  String   @db.VarChar(10)
+  CouponType  String   @db.VarChar(10)
+  Total       Decimal  @db.Decimal(15, 4)
+  StartDate   DateTime @db.DateTime(0)
+  EndDate     DateTime @db.DateTime(0)
+  UsedCount   Int
+  UseCustomer Int
+  Status      Boolean
+  DateAdded   DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_emailtemplate {
+  EmailTemplateId Int      @id @default(autoincrement())
+  Page            String   @db.VarChar(100)
+  FromEmailId     String   @db.VarChar(100)
+  FromName        String   @db.VarChar(100)
+  EmailSubject    String   @db.VarChar(100)
+  EmailContent    String   @db.Text
+  EmailStatus     Int
+  DateAdded       DateTime @db.DateTime(0)
+  DateModified    DateTime @db.DateTime(0)
+  IsDelete        Int      @default(0) @db.TinyInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_epin {
+  EpinRecordId      Int      @id @default(autoincrement())
+  Status            Int      @db.TinyInt
+  EpinPackageId     Int
+  EpinCount         Int
+  EpinTransactionId String   @db.VarChar(50)
+  EpinVoucherId     String   @db.VarChar(50)
+  EpinAmount        Decimal  @db.Decimal(10, 2)
+  ExpiryDay         DateTime @db.DateTime(0)
+  AllocatedBy       Int
+  UsedBy            Int
+  DateAdded         DateTime @db.DateTime(0)
+  ModifiedDate      DateTime @db.DateTime(0)
+  EpinStatus        Boolean  @default(false)
+  isDelete          Int      @default(0) @db.TinyInt
+}
+
+model arm_ewallet {
+  EwalletId     Int      @id @default(autoincrement())
+  MemberId      Int
+  Debit         Decimal  @db.Decimal(15, 4)
+  Credit        Decimal  @db.Decimal(15, 4)
+  Balance       Decimal  @db.Decimal(15, 4)
+  Description   String   @db.Text
+  TransactionId String   @db.VarChar(32)
+  Status        Boolean
+  DateAdded     DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_ewallet_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_faq {
+  FaqId        Int          @id @default(autoincrement())
+  LanguageId   Int
+  Type         String       @db.VarChar(100)
+  FaqQuestion  String       @db.Text
+  FaqAnswer    String       @db.Text
+  Status       Boolean
+  IsDelete     Int
+  StartDate    DateTime     @db.DateTime(0)
+  EndDate      DateTime     @db.DateTime(0)
+  DateAdded    DateTime     @db.DateTime(0)
+  arm_language arm_language @relation(fields: [LanguageId], references: [LanguageId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_faq_arm_language1")
+
+  @@index([LanguageId], map: "fk_arm_faq_arm_language1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_forcedmatrix {
+  MatrixId     Int      @id @default(autoincrement())
+  MemberId     Int
+  DirectId     Int
+  SpilloverId  Int
+  LevelCount   Int
+  MemberCount  Int
+  Totalmembers Int
+  Status       Boolean
+  DateAdded    DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_forcedmatrix_arm_members1_idx")
+}
+
+model arm_formulario {
+  id        Int      @id @default(autoincrement())
+  RefereId  Int
+  MailId    String   @db.VarChar(100)
+  Status    Int
+  DateAdded DateTime @db.DateTime(0)
+}
+
+model arm_funcionarios {
+  id               Int    @id @default(autoincrement())
+  Tipo_funcionario String @db.VarChar(25)
+  Valor            Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_history {
+  HistoryId          Int      @id @default(autoincrement())
+  depositid          Int
+  MemberId           Int
+  TypeId             Int
+  Credit             Decimal  @db.Decimal(15, 0)
+  Debit              Decimal  @db.Decimal(15, 0)
+  Balance            Decimal  @db.Decimal(15, 0)
+  Description        String   @db.Text
+  TransactionId      String   @db.VarChar(30)
+  PaymentReferenceId String   @db.VarChar(100)
+  paythrough         String   @db.VarChar(50)
+  Status             Boolean
+  DateAdded          DateTime @db.DateTime(0)
+  isDelete           Int      @default(0)
+
+  @@index([MemberId], map: "fk_arm_history_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_historypoints {
+  HistoryId          Int      @id @default(autoincrement())
+  depositid          Int
+  MemberId           Int
+  TypeId             Int
+  Credit             Decimal  @db.Decimal(15, 2)
+  Debit              Decimal  @db.Decimal(15, 2)
+  Balance            Decimal  @db.Decimal(15, 2)
+  Description        String   @db.Text
+  TransactionId      String   @db.VarChar(30)
+  PaymentReferenceId String   @db.VarChar(100)
+  paythrough         String   @db.VarChar(50)
+  Status             Boolean
+  DateAdded          DateTime @db.DateTime(0)
+  isDelete           Int      @default(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_hyip {
+  PackageId               Int      @id @default(autoincrement())
+  PackageName             String   @db.VarChar(50)
+  duration                String   @db.VarChar(100)
+  min_amount              String   @db.VarChar(100)
+  max_amount              String   @db.VarChar(100)
+  PackageFee              Decimal  @db.Decimal(10, 2)
+  interest                String   @db.VarChar(11)
+  workingdays             String   @db.VarChar(100)
+  DailyMaximumHyip        Int
+  DailyMaximumPairs       Int
+  OwnCommission           Decimal  @db.Decimal(10, 2)
+  DirectCommission        Decimal  @db.Decimal(10, 2)
+  PairCommissionStatus    Int      @db.TinyInt
+  PairCommission          Decimal  @db.Decimal(10, 2)
+  PairCommissionType      Int
+  MatchingBonus           String   @db.Text
+  MatchingPair            String   @db.Text
+  ProductLevelCommissions String   @db.Text
+  Status                  Boolean  @default(true)
+  DateAdded               DateTime @db.DateTime(0)
+  ModifiedDate            DateTime @db.DateTime(0)
+  hyip                    String   @db.Text
+}
+
+model arm_itags {
+  id             Int      @id @default(autoincrement())
+  imei           String   @db.VarChar(25)
+  mac            String   @db.VarChar(25)
+  fecha_registro DateTime @default(now()) @db.Timestamp(6)
+  placa          String   @db.VarChar(25)
+  num_vehiculo   String   @db.VarChar(25)
+  encargado      String   @db.VarChar(25)
+  empresa        String   @db.VarChar(25)
+  estado         String   @default("0") @db.VarChar(25)
+  MemberId       Int?     @default(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_language {
+  LanguageId    Int            @id @default(autoincrement())
+  LanguageName  String         @db.VarChar(100)
+  LanguageCode  String         @db.VarChar(50)
+  LanguageImage String         @db.VarChar(150)
+  Status        Int            @db.TinyInt
+  IsDelete      Int            @default(0) @db.TinyInt
+  arm_cms_page  arm_cms_page[]
+  arm_faq       arm_faq[]
+  arm_news      arm_news[]
+}
+
+model arm_layout {
+  LayoutId     Int      @id @default(autoincrement())
+  MemberId     Int
+  LayoutName   String   @db.VarChar(64)
+  LayoutType   Boolean
+  Content      String   @db.Text
+  LanguageId   Int
+  LayoutStatus Boolean
+  ViewCount    Int
+  DateAdded    DateTime @db.DateTime(0)
+  DateModified DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_layout_arm_members1_idx")
+}
+
+model arm_lead_member {
+  LeadId    Int      @id @default(autoincrement())
+  RefId     Int
+  firstname String   @db.VarChar(30)
+  lastname  String   @db.VarChar(30)
+  Email     String   @db.VarChar(255)
+  Phone     String   @db.VarChar(15)
+  Status    Int
+  StartDate DateTime @db.DateTime(0)
+  Ip        String   @db.VarChar(30)
+}
+
+model arm_leadpage {
+  LeadPageId  Int      @id @default(autoincrement())
+  PageName    String   @db.VarChar(150)
+  PageUrl     String   @db.VarChar(150)
+  PageContent String   @db.Text
+  Status      Int      @db.TinyInt
+  PageTitle   String   @db.VarChar(150)
+  MetaContent String   @db.Text
+  MetaKey     String   @db.Text
+  DateAdded   DateTime @db.DateTime(0)
+  IsDelete    Int      @db.TinyInt
+}
+
+model arm_liquidacion {
+  id              Int       @id @default(autoincrement())
+  Nombre          String    @db.VarChar(25)
+  Valor           String    @db.VarChar(25)
+  Observacion     String    @db.VarChar(100)
+  fecha_hora      DateTime  @default(now()) @db.DateTime(0)
+  conductor       String    @db.VarChar(25)
+  cant_itag       Int
+  Valor_cancelado String    @default("0") @db.VarChar(25)
+  Correo          String?   @db.VarChar(25)
+  diferencia      String    @default("0") @db.VarChar(25)
+  idgrupo         Int       @default(0)
+  Documento       String?   @db.VarChar(25)
+  diferenciatotal String?   @default("0") @db.VarChar(25)
+  fdesde          DateTime? @db.DateTime(0)
+  fhasta          DateTime? @db.DateTime(0)
+  placa           String?   @db.VarChar(10)
+  viajes          Int?      @default(0)
+  totalqr         Int?      @default(0)
+  totalnfc        Int?      @default(0)
+  totalintegrados Int?      @default(0)
+  responsable     String    @db.Text
+}
+
+model arm_liquidacion_old {
+  id              Int       @id @default(autoincrement())
+  Nombre          String    @db.VarChar(25)
+  Valor           String    @db.VarChar(25)
+  Observacion     String    @db.VarChar(100)
+  fecha_hora      DateTime  @db.DateTime(6)
+  conductor       String    @db.VarChar(25)
+  cant_itag       Int
+  Valor_cancelado String    @default("0") @db.VarChar(25)
+  Correo          String?   @db.VarChar(25)
+  diferencia      String    @default("0") @db.VarChar(25)
+  idgrupo         Int       @default(0)
+  Documento       String?   @db.VarChar(25)
+  diferenciatotal String?   @default("0") @db.VarChar(25)
+  fdesde          DateTime? @db.DateTime(0)
+  fhasta          DateTime? @db.DateTime(0)
+  placa           String?   @db.VarChar(10)
+  viajes          Int?      @default(0)
+  totalqr         Int?      @default(0)
+  totalnfc        Int?      @default(0)
+  responsable     String    @db.Text
+}
+
+model arm_liquidacion_taquillas {
+  Id              Int      @id @default(autoincrement())
+  Valor_recargado Int
+  Fecha_inicio    DateTime @db.DateTime(0)
+  Fecha_fin       DateTime @db.DateTime(0)
+  Observacion     String   @db.Text
+  Tope_restante   Int
+  Tipo_taquilla   String   @db.Text
+  Usuario         String   @db.Text
+  Valor_liquidado Int      @default(0)
+  Liquidado       Int      @default(0)
+  Valor_pendiente Int?     @default(0)
+  Tipo_pago       String?  @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_mailbox {
+  MailId       Int      @id @default(autoincrement())
+  MemberId     Int
+  SenderId     String   @db.VarChar(50)
+  Subject      String   @db.VarChar(255)
+  Message      String   @db.Text
+  Attatchement String   @db.Text
+  Status       Boolean
+  DateAdded    DateTime @db.DateTime(0)
+  isDelete     Int
+}
+
+model arm_marketing {
+  AdsId          Int                   @id @default(autoincrement())
+  MemberId       Int
+  Content        String                @db.VarChar(80)
+  AdsType        arm_marketing_AdsType
+  DestinationUrl String                @db.VarChar(255)
+  Counts         Int
+  TotalCounts    Int
+  Status         arm_marketing_Status
+  Comment        String                @db.Text
+  StartDate      DateTime              @db.DateTime(0)
+  EndDate        DateTime              @db.DateTime(0)
+  DateAdded      DateTime              @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_marketing_arm_members1_idx")
+}
+
+model arm_marketingtool {
+  MarketingId        Int                             @id @default(autoincrement())
+  MarketingTitle     String                          @db.VarChar(200)
+  MarketingType      arm_marketingtool_MarketingType
+  MarketingText      String                          @db.Text
+  MarketingImage     String                          @db.VarChar(150)
+  MarketingVideoLink String                          @db.VarChar(150)
+  MarketingDocument  String                          @db.VarChar(100)
+  Status             Int
+  DateAdded          DateTime                        @db.DateTime(0)
+  IsDelete           Int                             @db.TinyInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_matrixsetting {
+  Id                         Int                            @id @default(autoincrement())
+  MatrixName                 String                         @db.VarChar(50)
+  MatrixStatus               Int
+  Path                       String                         @db.VarChar(100)
+  TableName                  String                         @db.VarChar(50)
+  MatrixWidth                Int
+  MatrixDepth                Int
+  Position                   Int
+  ChangeDirect               Int                            @db.TinyInt
+  FreeMember                 Int                            @db.TinyInt
+  RankStatus                 Int                            @db.TinyInt
+  RepeatCommissionStatus     Int                            @db.TinyInt
+  MatrixCommission           Int                            @db.TinyInt
+  DirectCommissionStatus     Int
+  DirectCommissionType       Int
+  LevelCommissionStatus      Int
+  unillevelcommissionsstatus Int                            @db.TinyInt
+  unilevelcommissionstype    Int
+  LevelCommissionType        Int
+  BoardCommissionStatus      Int                            @db.TinyInt
+  BoardCommissionType        Int                            @db.TinyInt
+  RecycleStatus              Int                            @db.TinyInt
+  RecycleCount               Int
+  RecycleCommission          Int
+  RecycleCommissionType      Int
+  SpilloverSystem            Int                            @db.TinyInt
+  EarnCommisionStatus        Int                            @db.TinyInt
+  OwnCommissionStatus        Int                            @db.TinyInt
+  OwnCommissionType          Int                            @db.TinyInt
+  CarryForward               Int
+  CommissionProcess          Int                            @db.TinyInt
+  PvStatus                   Int                            @db.TinyInt
+  MatchingPair               String                         @db.VarChar(10)
+  MTMPayStatus               Int                            @db.TinyInt
+  MatrixUpline               arm_matrixsetting_MatrixUpline @default(dbgenerated("0"))
+  unilevelcommission         String                         @db.Text
+  unilevels                  String                         @db.Text
+}
+
+model arm_member_wishlist {
+  MemberId  Int
+  ProductId Int
+  DateAdded DateTime @db.DateTime(0)
+
+  @@id([MemberId, ProductId])
+  @@index([MemberId], map: "fk_arm_member_wishlist_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_monolinematrix {
+  MonoLineId  Int      @id @default(autoincrement())
+  MemberId    Int
+  DirectId    Int
+  SpilloverId Int
+  LevelCount  Int
+  MemberCount Int
+  Limits      Int
+  Status      Boolean
+  DateAdded   DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_monolinematrix_arm_members1_idx")
+}
+
+model arm_municipios {
+  id_municipio      Int               @id @default(autoincrement()) @db.UnsignedInt
+  municipio         String            @default("") @db.VarChar(255)
+  estado            Int               @db.UnsignedInt
+  departamento_id   Int               @db.UnsignedInt
+  arm_departamentos arm_departamentos @relation(fields: [departamento_id], references: [id_departamento], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_municipios_arm_departamentos1")
+
+  @@index([departamento_id], map: "departamento_id")
+  @@index([departamento_id], map: "fk_arm_municipios_arm_departamentos1_idx")
+}
+
+model arm_navigation {
+  id        Int      @default(autoincrement())
+  RefereId  Int
+  MailId    String   @db.VarChar(100)
+  Status    Int
+  DateAdded DateTime @db.DateTime(0)
+
+  @@id([id, MailId])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_news {
+  NewsId          Int          @id @default(autoincrement())
+  MemberId        Int
+  Type            String       @db.VarChar(100)
+  NewsHeader      String       @db.VarChar(255)
+  NewsDescription String       @db.Text
+  Message         String       @db.Text
+  Image           String       @db.Text
+  LanguageId      Int
+  IsDelete        Int
+  Status          Boolean
+  StartDate       DateTime     @db.DateTime(0)
+  EndDate         DateTime     @db.DateTime(0)
+  DateAdded       DateTime     @db.DateTime(0)
+  arm_language    arm_language @relation(fields: [LanguageId], references: [LanguageId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_news_arm_language1")
+
+  @@index([LanguageId], map: "fk_arm_news_arm_language1_idx")
+  @@index([MemberId], map: "fk_arm_news_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_news_all {
+  NewsId          Int      @id @default(autoincrement())
+  Type            String   @db.VarChar(100)
+  NewsHeader      String   @db.VarChar(255)
+  NewsDescription String   @db.Text
+  Message         String   @db.Text
+  Image           String   @db.Text
+  Status          Boolean
+  StartDate       DateTime @db.DateTime(0)
+  EndDate         DateTime @db.DateTime(0)
+  DateAdded       DateTime @db.DateTime(0)
+  MemberId        Int?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_oddevenmatrix {
+  MatrixId        Int      @id @default(autoincrement())
+  MemberId        Int
+  DirectId        Int
+  SpilloverId     Int
+  MemberCount     Int
+  XupCount        Int      @default(0)
+  XupStatus       Int      @default(0) @db.TinyInt
+  PassedUpSend    String   @db.Text
+  PassedUpReceive String   @db.Text
+  Status          Boolean
+  DateAdded       DateTime @db.DateTime(0)
+}
+
+model arm_order {
+  OrderId           Int                 @id @default(autoincrement())
+  OrderNumber       String              @db.VarChar(20)
+  MemberId          Int
+  FirstName         String              @default("") @db.VarChar(50)
+  LastName          String              @db.VarChar(50)
+  Email             String              @db.VarChar(100)
+  Phone             String              @db.VarChar(15)
+  Address1          String              @db.VarChar(100)
+  Address2          String              @db.VarChar(100)
+  City              String              @db.VarChar(50)
+  State             String              @db.VarChar(50)
+  Country           String              @db.VarChar(50)
+  Zip               String              @db.VarChar(10)
+  PaymentMethod     String              @db.VarChar(50)
+  PaymentCode       String              @db.VarChar(50)
+  CustomField       String              @db.Text
+  ShipFirstName     String              @db.VarChar(50)
+  ShipLastName      String              @db.VarChar(50)
+  ShipEmail         String              @db.VarChar(100)
+  ShipPhone         String              @db.VarChar(15)
+  ShipAddress1      String              @db.VarChar(50)
+  ShipAddress2      String              @db.VarChar(50)
+  ShipCity          String              @db.VarChar(50)
+  ShipState         String              @db.VarChar(50)
+  ShipCountry       String              @db.VarChar(50)
+  ShipZip           String              @db.VarChar(20)
+  ShipMethod        String              @db.VarChar(50)
+  ShipCode          String              @db.VarChar(50)
+  ShipCustomField   String              @db.Text
+  Comment           String              @db.Text
+  OrderTotal        Decimal             @db.Decimal(15, 0)
+  Discount          Decimal             @db.Decimal(15, 0)
+  Commission        Decimal             @db.Decimal(15, 0)
+  CommissionStatus  Int
+  CouponId          Int
+  Tracking          String              @db.VarChar(50)
+  CurrencyId        Int
+  CurrencyCode      String              @db.VarChar(10)
+  Ip                String              @db.VarChar(50)
+  Status            arm_order_Status
+  DateAdded         DateTime            @db.DateTime(0)
+  ModifiedDate      DateTime            @db.DateTime(0)
+  isDelete          Int                 @default(0)
+  comprobante       String              @db.VarChar(100)
+  Idpago            String              @db.VarChar(100)
+  GuiaRemision      String              @db.VarChar(100)
+  ShipLat           String?             @db.VarChar(100)
+  ShipLng           String?             @db.VarChar(100)
+  EstadoEnvio       String?             @db.VarChar(100)
+  Sponsor           Bytes?              @db.VarBinary(50)
+  arm_currency      arm_currency        @relation(fields: [CurrencyId], references: [CurrencyId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_order_arm_currency1")
+  arm_order_product arm_order_product[]
+
+  @@index([CurrencyId], map: "fk_arm_order_arm_currency1_idx")
+}
+
+model arm_order_product {
+  Id              Int               @id @default(autoincrement())
+  OrderId         Int
+  ProductId       Int
+  ProductName     String            @db.VarChar(50)
+  Quantity        Int
+  Price           Decimal           @db.Decimal(10, 2)
+  Total           Int
+  arm_order       arm_order         @relation(fields: [OrderId], references: [OrderId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_order_product_arm_order1")
+  arm_product     arm_product       @relation(fields: [ProductId], references: [ProductId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_order_product_arm_product1")
+  arm_order_total arm_order_total[]
+
+  @@index([OrderId], map: "fk_arm_order_product_arm_order1_idx")
+  @@index([ProductId], map: "fk_arm_order_product_arm_product1_idx")
+}
+
+model arm_order_total {
+  order_total_id    Int               @id @default(autoincrement())
+  order_id          Int
+  code              String            @db.VarChar(32)
+  title             String            @db.VarChar(255)
+  value             Decimal           @default(0) @db.Decimal(15, 0)
+  sort_order        Int
+  arm_order_product arm_order_product @relation(fields: [order_id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "arm_order_total_ibfk_1")
+
+  @@index([order_id], map: "fk_arm_order_total_arm_order_product1_idx")
+  @@index([order_id], map: "order_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_package {
+  PackageId                  Int               @id @default(autoincrement())
+  PackageName                String            @db.VarChar(50)
+  PackageFee                 Decimal           @db.Decimal(10, 2)
+  AdminFee                   Decimal           @db.Decimal(10, 2)
+  RenewalStatus              Int               @db.TinyInt
+  RenewalFee                 Decimal           @db.Decimal(15, 2)
+  RenewalTerm                Int               @db.TinyInt
+  AutoDebitStatus            Int
+  AutoCreateOrderStatus      Int
+  RecurringStatus            Int               @db.TinyInt
+  RecurringFee               Decimal           @db.Decimal(10, 2)
+  ProductId                  Int
+  ProductName                String            @db.VarChar(100)
+  OwnCommission              Decimal           @db.Decimal(10, 2)
+  MatrixCompletionCommission Decimal           @db.Decimal(10, 2)
+  LevelCompletedCommission   Decimal           @db.Decimal(10, 2)
+  LevelCommissions           String            @db.Text
+  ProductLevelCommissions    String            @db.Text
+  Image                      String            @db.VarChar(255)
+  Points                     Int
+  Status                     Boolean
+  DateAdded                  DateTime          @db.DateTime(0)
+  ModifiedDate               DateTime          @db.DateTime(0)
+  arm_requestepin            arm_requestepin[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_paymentsetting {
+  PaymentId               Int    @id @default(autoincrement())
+  PaymentName             String @db.VarChar(100)
+  PaymentStatus           Int    @db.TinyInt
+  PaymentLogo             String @db.VarChar(150)
+  PaymentMode             Int    @db.TinyInt
+  PaymentRecurring        Int    @db.TinyInt
+  PaymentMerchantId       String @db.VarChar(100)
+  PaymentMerchantPassword String @db.VarChar(100)
+  PaymentMerchantKey      String @db.VarChar(100)
+  PaymentMerchantApi      String @db.VarChar(100)
+  PaymentField1           String @db.VarChar(100)
+  PaymentField2           String @db.VarChar(100)
+  PaymentField3           String @db.VarChar(100)
+  Position                Int
+  PaymentTestUrl          String @db.VarChar(150)
+  PaymentLiveUrl          String @db.VarChar(150)
+}
+
+model arm_personal {
+  Id        Int    @id @default(autoincrement())
+  Iniciales String @db.Text
+  MemberId  Int
+  Nombre    String @db.Text
+}
+
+model arm_point {
+  PointId       Int      @id @default(autoincrement())
+  MemberId      Int
+  TransactionId String   @db.VarChar(15)
+  Type          Int      @db.TinyInt
+  Debit         Decimal  @db.Decimal(10, 0)
+  Credit        Decimal  @db.Decimal(10, 0)
+  Balance       Decimal  @db.Decimal(10, 0)
+  Status        Boolean
+  DateAdded     DateTime @db.DateTime(0)
+  ModifiedDate  DateTime @db.DateTime(0)
+}
+
+model arm_product {
+  ProductId          Int                  @id @default(autoincrement())
+  CatId              Int
+  ProductType        Int
+  File               String               @db.Text
+  ProductName        String               @db.VarChar(50)
+  Description        String               @db.Text
+  Quantity           Int
+  StockStatusId      Int
+  Image              String               @db.Text
+  Price              Decimal              @db.Decimal(15, 4)
+  salesprice         Decimal              @db.Decimal(15, 4)
+  TaxClassId         Int
+  Weight             Decimal              @db.Decimal(15, 4)
+  Height             Decimal              @db.Decimal(15, 4)
+  Length             Decimal              @db.Decimal(15, 4)
+  DisplyShop         Boolean              @default(true)
+  AutoShip           Boolean              @default(false)
+  iSentrole          Boolean              @default(false)
+  Viewed             Int
+  Attributes         String               @db.Text
+  WeightClassId      Int
+  LengthClassId      Int
+  Type               Boolean
+  Shipping           Int
+  Points             Int
+  Status             Boolean
+  DateAdded          DateTime             @db.DateTime(0)
+  ModifiedDate       DateTime             @db.DateTime(0)
+  isDelete           arm_product_isDelete @default(dbgenerated("0"))
+  idgrupo            Int?                 @default(0)
+  IMG_URL            String?              @default("") @db.VarChar(200)
+  lu_categoria       String?              @default("Ticket") @db.VarChar(100)
+  arm_coupon_product arm_coupon_product[]
+  arm_order_product  arm_order_product[]
+  arm_category       arm_category         @relation(fields: [CatId], references: [CategoryId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_product_arm_category1")
+  arm_product_desc   arm_product_desc[]
+  arm_productimage   arm_productimage[]
+
+  @@index([CatId], map: "fk_arm_product_arm_category1_idx")
+}
+
+model arm_product_desc {
+  id          Int         @id @default(autoincrement())
+  ProductId   Int
+  Description String      @db.Text
+  arm_product arm_product @relation(fields: [ProductId], references: [ProductId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_product_desc_arm_product1")
+
+  @@index([ProductId], map: "fk_arm_product_desc_arm_product1_idx")
+}
+
+model arm_productimage {
+  ImageId      Int         @id @default(autoincrement())
+  ProductId    Int
+  productImage String      @db.VarChar(250)
+  SortOrder    Int
+  arm_product  arm_product @relation(fields: [ProductId], references: [ProductId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_productimage_arm_product1")
+
+  @@index([ProductId], map: "fk_arm_productimage_arm_product1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_pv {
+  PackageId                   Int               @id @default(autoincrement())
+  PackageName                 String            @db.VarChar(50)
+  PackageFee                  Decimal           @db.Decimal(10, 2)
+  DailyMaximumPv              Int
+  DailyMaximumPairs           Int
+  OwnCommission               Decimal           @db.Decimal(10, 2)
+  DirectCommission            Decimal           @db.Decimal(10, 2)
+  PairCommissionStatus        Int               @db.TinyInt
+  PairCommission              Decimal           @db.Decimal(10, 2)
+  pointvalue                  String            @db.VarChar(50)
+  PairCommissionType          Int
+  MatchingBonus               String            @db.Text
+  MatchingPair                String            @db.Text
+  ProductLevelCommissions     String            @db.Text
+  Status                      Boolean           @default(true)
+  DateAdded                   DateTime          @db.DateTime(0)
+  ModifiedDate                DateTime          @db.DateTime(0)
+  pv                          Int
+  cv                          Int
+  porcentajeActivacionMensual String            @db.Text
+  porcentajeCompraExtra       String            @db.Text
+  arm_requestepin             arm_requestepin[]
+}
+
+model arm_ranksetting {
+  rank_id       Int    @id @default(autoincrement())
+  Membercount   String @db.VarChar(500)
+  ReferalCount  Int
+  balanceAmount String @db.VarChar(500)
+  points        Int
+  amount        String @db.VarChar(500)
+  Rank          String @db.VarChar(500)
+  Status        Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_requestepin {
+  RequestId        Int           @id @default(autoincrement())
+  PackageId        Int
+  UserId           Int
+  PayThrough       String        @db.VarChar(100)
+  PaymentReference String        @db.VarChar(100)
+  PaymentAmount    Decimal       @db.Decimal(10, 2)
+  EpinCount        Int
+  RequestStatus    Int           @default(0) @db.TinyInt
+  DateAdded        DateTime      @db.DateTime(0)
+  ModifiedDate     DateTime      @db.DateTime(0)
+  arm_boardplan    arm_boardplan @relation(fields: [PackageId], references: [PackageId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_requestepin_arm_boardplan1")
+  arm_package      arm_package   @relation(fields: [PackageId], references: [PackageId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_requestepin_arm_package1")
+  arm_pv           arm_pv        @relation(fields: [PackageId], references: [PackageId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_requestepin_arm_pv1")
+
+  @@index([PackageId], map: "fk_arm_requestepin_arm_boardplan1_idx")
+  @@index([PackageId], map: "fk_arm_requestepin_arm_package1_idx")
+  @@index([PackageId], map: "fk_arm_requestepin_arm_pv1_idx")
+}
+
+model arm_requirefields {
+  RequireId         Int    @id @default(autoincrement())
+  ReuireFieldName   String @db.VarChar(100)
+  FieldPosition     Int
+  FieldEnableStatus Int
+  ReuireFieldStatus Int
+  Page              String @db.VarChar(100)
+}
+
+model arm_review {
+  ReviewId     Int      @id
+  text         String   @db.Text
+  ProductId    Int
+  MemberId     Int      @default(autoincrement())
+  author       String   @db.VarChar(64)
+  rating       Int
+  Status       Boolean  @default(false)
+  DateAdded    DateTime @db.DateTime(0)
+  DateModified DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_review_arm_members1_idx")
+  @@index([ProductId], map: "fk_arm_review_arm_product1_idx")
+}
+
+model arm_rutas {
+  id         Int     @id @default(autoincrement())
+  idGrup     Int?
+  nombreRuta String  @db.VarChar(25)
+  latOrigen  String? @db.VarChar(25)
+  lngOrigen  String? @db.VarChar(25)
+  latDestino String? @db.VarChar(25)
+  lngDestino String? @db.VarChar(25)
+}
+
+model arm_search {
+  id    Int     @id @default(autoincrement())
+  valor String? @db.VarChar(100)
+  fecha String? @db.VarChar(50)
+}
+
+model arm_setting {
+  SettingId     Int      @id @default(autoincrement())
+  StoreId       Int
+  StoreCode     String   @db.VarChar(32)
+  Page          String   @db.VarChar(50)
+  KeyValue      String   @db.VarChar(50)
+  ContentValue  String   @db.Text
+  DateAdded     DateTime @db.DateTime(0)
+  wallet_master Int?     @default(0)
+}
+
+model arm_shipping {
+  ShippingId   Int                 @id @default(autoincrement())
+  Country      String              @db.VarChar(5)
+  MinValue     Decimal             @db.Decimal(10, 0)
+  MaxValue     Decimal             @db.Decimal(10, 0)
+  Rates        Decimal             @db.Decimal(10, 0)
+  FastDelivery Float               @db.Float
+  Status       arm_shipping_Status
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_smstemplate {
+  SmsTemplateId Int      @id @default(autoincrement())
+  Page          String   @db.VarChar(100)
+  FromNo        String   @db.VarChar(20)
+  FromName      String   @db.VarChar(100)
+  SmsContent    String   @db.VarChar(150)
+  SmsStatus     Int
+  DateAdded     DateTime @db.DateTime(0)
+  DateModified  DateTime @db.DateTime(0)
+  IsDelete      Int      @default(0) @db.TinyInt
+}
+
+model arm_subcategory {
+  SubCatId            Int                   @id @default(autoincrement())
+  CategoryId          Int
+  SubCategory         String                @db.VarChar(30)
+  Descriptions        String                @db.Text
+  Status              Boolean
+  DateAdded           DateTime              @db.DateTime(0)
+  ModifiedDate        DateTime              @db.DateTime(0)
+  Attributes          String                @db.Text
+  arm_coupon_category arm_coupon_category[]
+  arm_category        arm_category          @relation(fields: [CategoryId], references: [CategoryId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_subcategory_arm_category")
+
+  @@index([CategoryId], map: "fk_arm_subcategory_arm_category_idx")
+}
+
+model arm_subscribe_list {
+  id        Int      @id @default(autoincrement())
+  RefereId  Int
+  MailId    String   @db.VarChar(100)
+  Status    Int
+  DateAdded DateTime @db.DateTime(0)
+}
+
+model arm_tellus {
+  TellusId  Int      @id @default(autoincrement())
+  Subject   String   @db.VarChar(255)
+  Message   String   @db.Text
+  Status    Int
+  DateAdded DateTime @db.DateTime(0)
+  isDelete  Int
+  Brochure  String?  @db.VarChar(255)
+  MemberId  Int?
+}
+
+model arm_test {
+  id          Int    @id @default(autoincrement())
+  postcontent String @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_testimonial {
+  TestimonialId Int      @id @default(autoincrement())
+  MemberId      Int
+  UserLogo      String   @db.VarChar(150)
+  Type          Int      @db.TinyInt
+  Subject       String   @db.VarChar(255)
+  Message       String   @db.Text
+  Comment       String   @db.Text
+  Status        Boolean
+  StartDate     DateTime @db.DateTime(0)
+  EndDate       DateTime @db.DateTime(0)
+  DateAdded     DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "MemberId")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_ticket {
+  TicketId      Int                 @id @default(autoincrement())
+  TransactionId String              @db.VarChar(16)
+  Subject       String              @db.VarChar(150)
+  Priority      arm_ticket_Priority @default(dbgenerated("1"))
+  Status        arm_ticket_Status   @default(dbgenerated("1"))
+  DateAdded     DateTime            @db.DateTime(0)
+  ModifiedDate  DateTime            @db.DateTime(0)
+  isDelete      arm_ticket_isDelete @default(dbgenerated("0"))
+}
+
+enum arm_banned_Status {
+  zero  @map("0")
+  one   @map("1")
+}
+
+enum arm_marketingtool_MarketingType {
+  text
+  image
+  video
+  document
+}
+
+enum arm_marketing_AdsType {
+  Image
+  Content
+  Video
+  Document
+}
+
+enum arm_ticket_Priority {
+  one @map("1")
+  two @map("2")
+  three @map("3")
+  four @map("4")
+}
+
+enum arm_banned_isDelete {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_ticket_Status {
+  zero @map("0")
+  one @map("1")
+  two @map("2")
+}
+
+enum arm_shipping_Status {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_marketing_Status {
+  Deleted
+  Active
+  publish
+  UnPublish
+}
+
+enum arm_ticket_isDelete {
+  one @map("1")
+  zero @map("0")
+}
+
+enum arm_category_isDelete {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_product_isDelete {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_matrixsetting_MatrixUpline {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_order_Status {
+  Pendiente
+  Aprobado
+  Cancelado
+}

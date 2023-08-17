@@ -1,0 +1,2462 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL2")
+}
+
+model campos {
+  Descripcion    String? @unique(map: "Descripcion") @db.VarChar(100)
+  Codigo         String? @unique(map: "Codigo") @db.VarChar(100)
+  C_I            String? @map("C-I") @db.VarChar(100)
+  Lote           String? @db.VarChar(100)
+  c5             String? @db.VarChar(100)
+  c6             String? @db.VarChar(100)
+  c7             String? @db.VarChar(100)               
+  c8             String? @db.VarChar(100)
+  c9             String? @db.VarChar(100)
+  c10            String? @db.VarChar(100)
+  c11            String? @db.VarChar(100)
+  c12            String? @db.VarChar(100)
+  c13            String? @db.VarChar(100)
+  c14            String? @db.VarChar(100)
+  c15            String? @db.VarChar(100)
+  c16            String? @db.VarChar(100)
+  c17            String? @db.VarChar(100)
+  c18            String? @db.VarChar(100)
+  c19            String? @db.VarChar(100)
+  c20            String? @db.VarChar(100)
+  CPalet         String? @default("0") @db.VarChar(20)
+  CantidadBodega Int?    @default(0)
+  Id             Int     @id @default(autoincrement())
+
+  @@map("20campos")
+}
+
+model alistasalida {
+  Empresa       String? @default("DISCONFITES S.A") @db.VarChar(50)
+  Descripcion   String  @db.VarChar(255)
+  Cantidad      Float
+  Id            Int     @id @default(autoincrement())
+  OrdenSalid    String  @default("0") @db.VarChar(80)
+  operario      String  @default(" ") @db.VarChar(80)
+  ubicacion     String  @default(" ") @db.VarChar(80)
+  Lote          String  @default(" ") @db.VarChar(80)
+  tipodoc       String? @db.VarChar(100)
+  consecutivo   Int?
+  descmotivodoc String? @db.VarChar(255)
+  cargue        String? @db.VarChar(255)
+  observacion   String? @db.VarChar(255)
+  referencia    String? @db.VarChar(100)
+  rowiddoc      String? @db.VarChar(100)
+  idtarea       Int?    @default(0)
+}
+
+model alistasalida_procesada {
+  Empresa       String?   @default("DISCONFITES S.A") @db.VarChar(50)
+  Descripcion   String    @db.VarChar(255)
+  Cantidad      Float
+  Id            Int       @id @default(autoincrement())
+  OrdenSalid    String    @default("0") @db.VarChar(80)
+  operario      String    @default(" ") @db.VarChar(80)
+  ubicacion     String    @default(" ") @db.VarChar(80)
+  Lote          String    @default(" ") @db.VarChar(80)
+  tipodoc       String?   @db.VarChar(100)
+  consecutivo   Int?
+  descmotivodoc String?   @db.VarChar(255)
+  cargue        String?   @db.VarChar(255)
+  observacion   String?   @db.VarChar(255)
+  referencia    String?   @db.VarChar(100)
+  rowiddoc      String?   @db.VarChar(100)
+  fecha_separa  DateTime? @default(now()) @db.Timestamp(0)
+  idtarea       Int?      @default(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_autoresponder {
+  AutoRespondId Int    @id @default(autoincrement())
+  Subject       String @db.VarChar(200)
+  Duration      Int
+  Limitation    Int
+  Message       String @db.Text
+  ContentsHtml  String @db.Text
+  Status        Int    @default(1) @db.TinyInt
+}
+
+model arm_banned {
+  BannedId  Int                 @id @default(autoincrement())
+  Ip        String              @db.VarChar(20)
+  Status    arm_banned_Status
+  DateAdded DateTime            @db.DateTime(0)
+  isDelete  arm_banned_isDelete @default(dbgenerated("0"))
+}
+
+model arm_bannerimage {
+  banner_id        Int     @id @default(autoincrement())
+  banner_name      String  @db.Text
+  banner_image     String  @db.Text
+  description      String  @db.Text
+  status           Int     @db.TinyInt
+  ProductId        Int?    @default(0)
+  idcliente        Int?    @default(0)
+  show_title       Int?    @default(0) @db.TinyInt
+  show_description Int?    @default(0) @db.TinyInt
+  idempresa        Int?    @default(0)
+  fecha            String? @db.VarChar(200)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_binaryhyip {
+  MatrixId          Int
+  MemberId          Int
+  DirectId          Int
+  SpilloverId       Int
+  LevelCount        Int
+  TotalMemberCount  Int
+  MemberCount       Int
+  Status            Boolean
+  LeftId            Int
+  RightId           Int
+  LeftPv            Int
+  RightPv           Int
+  LeftCount         Int
+  LeftPairCount     Int
+  RightCount        Int
+  RightPairCount    Int
+  leftdowncount     String   @db.VarChar(40)
+  rightdowncount    String   @db.VarChar(40)
+  LeftCarryForward  Int
+  RightCarryForward Int
+  test              Int
+  DateAdded         DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_binaryhyip_arm_members1_idx")
+  @@ignore
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_binarymatrix {
+  MatrixId         Int      @id @default(autoincrement())
+  MemberId         Int
+  DirectId         Int
+  SpilloverId      Int
+  LevelCount       Int
+  TotalMemberCount Int
+  MemberCount      Int
+  Status           Boolean
+  LeftId           Int
+  RightId          Int
+  LeftPv           Decimal  @db.Decimal(15, 2)
+  RightPv          Decimal  @db.Decimal(15, 2)
+  LeftCount        Int
+  LeftPairCount    Int
+  RightCount       Int
+  RightPairCount   Int
+  leftdowncount    String   @db.VarChar(40)
+  rightdowncount   String   @db.VarChar(40)
+  DateAdded        DateTime @db.DateTime(0)
+  LeftQv           Decimal  @db.Decimal(15, 2)
+  RightQv          Decimal  @db.Decimal(15, 2)
+
+  @@index([MemberId], map: "fk_arm_binarymatrix_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_binarymatrix_temporal {
+  MatrixId         Int      @id @default(autoincrement())
+  MemberId         Int
+  DirectId         Int
+  SpilloverId      Int
+  LevelCount       Int
+  TotalMemberCount Int
+  MemberCount      Int
+  Status           Boolean
+  LeftId           Int
+  RightId          Int
+  LeftPv           Decimal  @db.Decimal(15, 2)
+  RightPv          Decimal  @db.Decimal(15, 2)
+  LeftCount        Int
+  LeftPairCount    Int
+  RightCount       Int
+  RightPairCount   Int
+  leftdowncount    String   @db.VarChar(40)
+  rightdowncount   String   @db.VarChar(40)
+  DateAdded        DateTime @db.DateTime(0)
+  LeftQv           Decimal  @db.Decimal(15, 2)
+  RightQv          Decimal  @db.Decimal(15, 2)
+}
+
+model arm_bitcoin_data {
+  id           Int      @id @default(autoincrement())
+  address      String   @db.VarChar(100)
+  UserId       Int
+  OrderId      Int
+  Total        Decimal  @db.Decimal(10, 2)
+  label        String   @db.VarChar(150)
+  post_content String   @db.Text
+  DateAdded    DateTime @default(now()) @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_boardmatrix {
+  BoardMemberId         Int      @id @default(autoincrement())
+  BoardId               Int      @db.TinyInt
+  MemberId              Int
+  DirectId              Int
+  SpilloverId           Int
+  LevelCount            Int
+  MemberCount           Int
+  Totalmembers          Int
+  Status                Boolean  @default(true)
+  ReentryStatus         Int      @db.TinyInt
+  NextReentryStatus     Int      @db.TinyInt
+  BoardCommissionStatus Int      @default(0) @db.TinyInt
+  DateAdded             DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_boardmatrix_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_boardplan {
+  PackageId              Int     @id @default(autoincrement())
+  PackageName            String  @db.VarChar(100)
+  PackageFee             Decimal @db.Decimal(10, 2)
+  ReentryBoardStatus     Int     @db.TinyInt
+  ReentryNextBoardStatus Int     @db.TinyInt
+  ReentryNextBoard       Int     @db.TinyInt
+  FollowSponsor          Int
+  BoardWidth             Int
+  BoardDepth             Int
+  Status                 Int     @default(1)
+  OwnCommission          Decimal @db.Decimal(10, 2)
+  DirectCommission       Decimal @db.Decimal(10, 2)
+  BoardCommission        Decimal @db.Decimal(10, 2)
+  LevelCommission        String  @db.Text
+  ProductLevelCommission String  @db.Text
+  upgradelevel           String  @db.Text
+}
+
+model arm_categoria_tienda {
+  id        Int    @id @default(autoincrement())
+  categoria String @db.VarChar(500)
+  estado    String @default("1") @db.Char(1)
+}
+
+model arm_category {
+  CategoryId    Int                   @id @default(autoincrement())
+  Category      String                @db.VarChar(50)
+  Image         String?               @db.VarChar(255)
+  Description   String                @db.Text
+  ParentId      Int                   @default(0)
+  SortOrder     Int                   @default(0)
+  Status        Boolean
+  DateAdded     DateTime              @db.DateTime(0)
+  DateModified  DateTime              @db.DateTime(0)
+  isDelete      arm_category_isDelete @default(dbgenerated("0"))
+  idgrupo       Int?                  @default(0)
+  iddependencia Int?                  @default(0)
+  products      products[]
+
+  @@index([ParentId], map: "parentId")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_cms_page {
+  pageID          Int          @id @default(autoincrement())
+  pageTitle       String       @db.Text
+  pageUrl         String       @db.Text
+  navTitle        String       @db.Text
+  LanguageId      Int
+  pageContent     String       @db.Text
+  pageContentHTML String       @db.Text
+  pageKeywords    String       @db.Text
+  pageDescription String       @db.Text
+  Status          Int
+  pageCreated     DateTime     @default(now()) @db.Timestamp(0)
+  isDelete        Int
+  arm_language    arm_language @relation(fields: [LanguageId], references: [LanguageId], onDelete: NoAction, onUpdate: NoAction, map: "arm_cms_page_ibfk_1")
+
+  @@index([LanguageId], map: "fk_arm_cms_page_arm_language1_idx")
+}
+
+model arm_codeverificacionmail {
+  id     Int     @id @default(autoincrement())
+  email  String? @db.VarChar(100)
+  codigo String? @db.VarChar(10)
+  fecha  String? @db.VarChar(100)
+  estado Int?    @default(0)
+  movil  String? @default("0") @db.VarChar(100)
+}
+
+model arm_communiques {
+  Id            Int      @id @default(autoincrement())
+  idgrupo       Int
+  Title         String   @db.Text
+  Description   String   @db.Text
+  Content       String   @db.Text
+  Status        Int
+  Section       Int
+  Officer       Int
+  Priority      Int
+  Dateadded     DateTime @db.DateTime(0)
+  Ext_coverimg  String?  @db.Text
+  Coverimg_type Int?     @default(0)
+  Encargado     Int?
+  Version       Int?     @default(0)
+  Datemodified  DateTime @db.DateTime(0)
+  Ultimaedicion String?  @db.Text
+}
+
+model arm_communiques_copy {
+  Id            Int      @id @default(autoincrement())
+  idgrupo       Int
+  Title         String   @db.Text
+  Description   String   @db.Text
+  Content       String   @db.Text
+  Status        Int
+  Section       Int
+  Officer       Int
+  Priority      Int
+  Dateadded     DateTime @db.DateTime(0)
+  Ext_coverimg  String?  @db.Text
+  Coverimg_type Int?     @default(0)
+  Encargado     Int?
+  Version       Int?     @default(0)
+  Datemodified  DateTime @db.DateTime(0)
+  Ultimaedicion String?  @db.Text
+  contrato      Int?     @default(0)
+}
+
+model arm_communiques_types {
+  Id     Int     @id @default(autoincrement())
+  tipo   String? @db.VarChar(255)
+  estado String? @db.VarChar(255)
+}
+
+model arm_config_apppage {
+  Id          Int  @id @default(autoincrement())
+  id_tipo     Int?
+  id_clientes Int?
+}
+
+model arm_country {
+  country_id        Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(128)
+  iso_code_2        String              @db.VarChar(2)
+  iso_code_3        String              @db.VarChar(3)
+  address_format    String              @db.Text
+  postcode_required Boolean
+  status            Boolean             @default(true)
+  arm_departamentos arm_departamentos[]
+}
+
+model arm_coupon {
+  CouponId            Int                   @id @default(autoincrement())
+  CouponName          String                @db.VarChar(255)
+  CouponCode          String                @db.VarChar(20)
+  CouponType          String                @db.Char(1)
+  StartDate           DateTime              @db.DateTime(0)
+  EndDate             DateTime              @db.DateTime(0)
+  UseUser             Int
+  Total               Decimal               @db.Decimal(10, 2)
+  UsedTotal           Int
+  Status              Int
+  DateAdded           DateTime              @db.DateTime(0)
+  isDelete            Int                   @default(0)
+  arm_coupon_category arm_coupon_category[]
+  arm_coupon_history  arm_coupon_history[]
+  arm_coupon_product  arm_coupon_product[]
+}
+
+model arm_coupon_category {
+  CouponCategoryId Int        @id @default(autoincrement())
+  CouponId         Int
+  CategoryId       Int
+  arm_coupon       arm_coupon @relation(fields: [CouponId], references: [CouponId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_coupon_category_arm_coupon1")
+
+  @@index([CouponId], map: "fk_arm_coupon_category_arm_coupon1_idx")
+  @@index([CategoryId], map: "fk_arm_coupon_category_arm_subcategory1_idx")
+}
+
+model arm_coupon_history {
+  HistoryId  Int        @id @default(autoincrement())
+  CouponId   Int
+  OrderId    Int
+  CustomerId Int
+  Amount     Decimal    @db.Decimal(15, 4)
+  DateAdded  DateTime   @db.DateTime(0)
+  arm_coupon arm_coupon @relation(fields: [CouponId], references: [CouponId], onDelete: NoAction, onUpdate: NoAction, map: "arm_coupon_history_ibfk_1")
+
+  @@index([CouponId], map: "fk_arm_coupon_history_arm_coupon1_idx")
+  @@index([CouponId], map: "fk_arm_coupon_history_arm_discount1_idx")
+  @@index([OrderId], map: "fk_arm_coupon_history_arm_order1_idx")
+}
+
+model arm_coupon_product {
+  CouponProductId Int        @default(autoincrement())
+  CouponId        Int
+  ProductId       Int
+  arm_coupon      arm_coupon @relation(fields: [CouponId], references: [CouponId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_coupon_product_arm_coupon1")
+
+  @@id([CouponProductId, CouponId, ProductId])
+  @@index([CouponId], map: "fk_arm_coupon_product_arm_coupon1_idx")
+  @@index([ProductId], map: "fk_arm_coupon_product_arm_product1_idx")
+}
+
+model arm_cronometro {
+  id            Int       @default(autoincrement())
+  id_evento     Int?
+  time_start    String    @default("") @db.VarChar(100)
+  time_end      String?   @default("0") @db.VarChar(100)
+  time_diff     String?   @default("0") @db.VarChar(100)
+  fecha         DateTime? @default(now()) @db.Timestamp(0)
+  memberId      Int?
+  id_linea      Int?      @default(0)
+  iddependencia Int       @default(0)
+  idgrupo       Int       @default(0)
+  ip_user       String?   @default("000.000.000") @db.VarChar(30)
+  transaction   String    @db.VarChar(200)
+
+  @@id([id, transaction])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_currency {
+  CurrencyId     Int      @id @default(autoincrement())
+  CurrencyName   String   @db.VarChar(50)
+  CurrencyCode   String   @db.VarChar(50)
+  CurrencySymbol String   @db.VarChar(50)
+  CurrencyValue  Decimal  @db.Decimal(15, 4)
+  Status         Int      @db.TinyInt
+  DateAdded      DateTime @db.DateTime(0)
+  DateModified   DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_customfields {
+  CustomFieldId      Int      @id @default(autoincrement())
+  CustomLabel        String   @db.VarChar(50)
+  CustomName         String   @db.VarChar(50)
+  CustomType         String   @db.VarChar(50)
+  CustomValue        String   @db.Text
+  CustomFieldRequire Int
+  Page               String   @db.VarChar(50)
+  Status             Int      @default(1) @db.TinyInt
+  SortOrder          Int      @db.TinyInt
+  DateAdded          DateTime @db.DateTime(0)
+  DateModified       DateTime @db.DateTime(0)
+}
+
+model arm_departamentos {
+  id_departamento Int          @id @default(autoincrement()) @db.UnsignedInt
+  departamento    String       @default("") @db.VarChar(255)
+  estado          String?      @default("1") @db.Char(1)
+  pais_id         Int?
+  codigo          Int?         @default(0)
+  arm_country     arm_country? @relation(fields: [pais_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_departamentos_arm_country1")
+
+  @@index([pais_id], map: "fk_arm_departamentos_arm_country1_idx")
+}
+
+model arm_discount {
+  CouponId    Int      @id @default(autoincrement())
+  CouponName  String   @db.VarChar(50)
+  CouponCode  String   @db.VarChar(10)
+  CouponType  String   @db.VarChar(10)
+  Total       Decimal  @db.Decimal(15, 4)
+  StartDate   DateTime @db.DateTime(0)
+  EndDate     DateTime @db.DateTime(0)
+  UsedCount   Int
+  UseCustomer Int
+  Status      Boolean
+  DateAdded   DateTime @db.DateTime(0)
+}
+
+model arm_documento {
+  id            Int       @default(autoincrement())
+  MemberId      Int?
+  id_evento     Int?      @default(0)
+  id_linea      Int?
+  data          String?   @db.LongText
+  fecha         DateTime? @default(now()) @db.Timestamp(0)
+  lat           String?   @default("") @db.VarChar(100)
+  lng           String?   @default("") @db.VarChar(100)
+  idgrupo       Int?      @default(0)
+  iddependencia Int?      @default(0)
+  ip_user       String?   @default("000.000.000") @db.VarChar(80)
+  transaction   String    @db.VarChar(200)
+
+  @@id([id, transaction])
+}
+
+model arm_ecommerce_configpage {
+  Id                      Int     @id @default(autoincrement())
+  id_clientes             Int?
+  idconfigapppage         Int?
+  content_home            String? @db.Text
+  color_text              String? @db.Text
+  color_background        String? @db.Text
+  color_btn_background    String? @db.Text
+  color_btn_text          String? @db.Text
+  color_nav_background    String? @db.Text
+  color_nav_text          String? @db.Text
+  color_footer_background String? @db.Text
+  color_footer_text       String? @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_emailtemplate {
+  EmailTemplateId Int      @id @default(autoincrement())
+  Page            String   @db.VarChar(100)
+  FromEmailId     String   @db.VarChar(100)
+  FromName        String   @db.VarChar(100)
+  EmailSubject    String   @db.VarChar(100)
+  EmailContent    String   @db.Text
+  EmailStatus     Int
+  DateAdded       DateTime @db.DateTime(0)
+  DateModified    DateTime @db.DateTime(0)
+  IsDelete        Int      @default(0) @db.TinyInt
+}
+
+model arm_entidades_bancarias {
+  id     Int    @id @default(autoincrement())
+  nombre String @db.VarChar(200)
+  estado String @default("1") @db.Char(1)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_epin {
+  EpinRecordId      Int      @id @default(autoincrement())
+  Status            Int      @db.TinyInt
+  EpinPackageId     Int
+  EpinCount         Int
+  EpinTransactionId String   @db.VarChar(50)
+  EpinVoucherId     String   @db.VarChar(50)
+  EpinAmount        Decimal  @db.Decimal(10, 2)
+  ExpiryDay         DateTime @db.DateTime(0)
+  AllocatedBy       Int
+  UsedBy            Int
+  DateAdded         DateTime @db.DateTime(0)
+  ModifiedDate      DateTime @db.DateTime(0)
+  EpinStatus        Boolean  @default(false)
+  isDelete          Int      @default(0) @db.TinyInt
+}
+
+model arm_eventos {
+  id                     Int     @id @default(autoincrement())
+  nombre                 String? @db.VarChar(200)
+  slogan                 String? @db.Text
+  terminos_condiciones   String? @db.Text
+  modo_premiacion        String? @db.VarChar(200)
+  valor_premiacion       Int?
+  chk_nivel_fidelidad    String? @default("0") @db.Char(2)
+  nivel_detallista       String? @db.VarChar(100)
+  categoria_social       String? @db.VarChar(20)
+  pais                   Int?    @default(47)
+  departamento           String? @default("1") @db.VarChar(100)
+  municipio              String? @default("1") @db.VarChar(100)
+  chk_evento             String? @default("0") @db.Char(2)
+  nombre_evento          String? @default("") @db.VarChar(200)
+  desde                  String? @db.VarChar(100)
+  hasta                  String? @db.VarChar(100)
+  fecha_registro         String? @db.VarChar(100)
+  fecha_modificacion     String? @db.VarChar(100)
+  estado                 String? @default("0") @db.Char(1)
+  url_file               String? @db.VarChar(400)
+  responsable            Int?
+  cantidad               Int?    @default(0)
+  contador               Int?    @default(0)
+  id_dependencia         Int?    @default(0)
+  id_empresa             Int?    @default(0)
+  url_banner             String? @db.VarChar(400)
+  chk_pago               String? @default("0") @db.Char(1)
+  chk_fotos              String? @default("0") @db.Char(1)
+  id_linea               Int?    @default(0)
+  chk_zonas              String? @default("0") @db.Char(1)
+  chk_gps                String? @default("1") @db.Char(1)
+  banner_accion_imagen   String? @default("leerqr_peque.gif") @db.VarChar(400)
+  banner_accion_text     String? @default("<p><span style=\"color:red\">Clic</span> para escanear el QR con tu m&oacute;vil y participa!</p>") @db.VarChar(400)
+  bg_banner_left         String? @default("#111111") @db.VarChar(10)
+  font_banner_left       String? @default("#ffffff") @db.VarChar(10)
+  bg_banner_right        String? @default("#9b0000") @db.VarChar(10)
+  font_banner_right      String? @default("#ffffff") @db.VarChar(10)
+  texto_redes            String? @default("Hola, te invito a participar en este gran evento!") @db.VarChar(300)
+  chk_mostrar_img_accion String? @default("1") @db.Char(1)
+  chk_terminos           String? @default("1") @db.Char(1)
+  chk_premiacion         String? @default("0") @db.Char(1)
+}
+
+model arm_eventos_codigos {
+  id           Int       @id @default(autoincrement())
+  id_evento    Int?      @default(0)
+  qr_text      String?   @unique(map: "unicotext") @db.VarChar(100)
+  estado       Boolean?  @default(false)
+  fecha_update DateTime? @default(now()) @db.Timestamp(0)
+  lote         String?   @db.VarChar(100)
+  producto     Int?      @default(0)
+
+  @@index([qr_text], map: "qr_text")
+}
+
+model arm_eventos_premios {
+  id            Int       @default(autoincrement())
+  id_evento     Int?
+  fecha         DateTime? @default(now()) @db.Timestamp(0)
+  lat           String?   @db.VarChar(100)
+  lng           String?   @db.VarChar(100)
+  qrtext        String?   @db.VarChar(255)
+  memberId      Int?
+  estado        Int?      @default(1) @db.TinyInt
+  entrega       Int?      @default(0)
+  id_linea      Int?      @default(0)
+  iddependencia Int?      @default(0)
+  idgrupo       Int?      @default(0)
+  ip_user       String?   @default("000.000.000") @db.VarChar(80)
+  transaction   String    @db.VarChar(200)
+  nombrecampa   String?   @default("evento") @db.VarChar(100)
+
+  @@id([id, transaction])
+}
+
+model arm_ewallet {
+  EwalletId     Int      @id @default(autoincrement())
+  MemberId      Int
+  Debit         Decimal  @db.Decimal(15, 4)
+  Credit        Decimal  @db.Decimal(15, 4)
+  Balance       Decimal  @db.Decimal(15, 4)
+  Description   String   @db.Text
+  TransactionId String   @db.VarChar(32)
+  Status        Boolean
+  DateAdded     DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_ewallet_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_faq {
+  FaqId        Int          @id @default(autoincrement())
+  LanguageId   Int
+  Type         String       @db.VarChar(100)
+  FaqQuestion  String       @db.Text
+  FaqAnswer    String       @db.Text
+  Status       Boolean
+  IsDelete     Int
+  StartDate    DateTime     @db.DateTime(0)
+  EndDate      DateTime     @db.DateTime(0)
+  DateAdded    DateTime     @db.DateTime(0)
+  arm_language arm_language @relation(fields: [LanguageId], references: [LanguageId], onDelete: NoAction, onUpdate: NoAction, map: "fk_arm_faq_arm_language1")
+
+  @@index([LanguageId], map: "fk_arm_faq_arm_language1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_forcedmatrix {
+  MatrixId     Int      @id @default(autoincrement())
+  MemberId     Int
+  DirectId     Int
+  SpilloverId  Int
+  LevelCount   Int
+  MemberCount  Int
+  Totalmembers Int
+  Status       Boolean
+  DateAdded    DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_forcedmatrix_arm_members1_idx")
+}
+
+model arm_formulario {
+  id        Int      @id @default(autoincrement())
+  RefereId  Int
+  MailId    String   @db.VarChar(100)
+  Status    Int
+  DateAdded DateTime @db.DateTime(0)
+}
+
+model arm_gps {
+  id            Int       @default(autoincrement())
+  MemberId      Int?
+  id_evento     Int?      @default(0)
+  id_linea      Int?
+  data          String?   @db.LongText
+  fecha         DateTime? @default(now()) @db.Timestamp(0)
+  lat           String?   @default("") @db.VarChar(100)
+  lng           String?   @default("") @db.VarChar(100)
+  idgrupo       Int?      @default(0)
+  iddependencia Int?      @default(0)
+  ip_user       String?   @default("000.000.000") @db.VarChar(80)
+  transaction   String    @db.VarChar(200)
+  direccion     String?   @db.VarChar(500)
+
+  @@id([id, transaction])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_history {
+  HistoryId          Int      @id @default(autoincrement())
+  depositid          Int
+  MemberId           Int
+  TypeId             Int
+  Credit             Decimal  @db.Decimal(15, 0)
+  Debit              Decimal  @db.Decimal(15, 0)
+  Balance            Decimal  @db.Decimal(15, 0)
+  Description        String   @db.Text
+  TransactionId      String   @db.VarChar(30)
+  PaymentReferenceId String   @db.VarChar(100)
+  paythrough         String   @db.VarChar(50)
+  Status             Boolean
+  DateAdded          DateTime @db.DateTime(0)
+  isDelete           Int      @default(0)
+
+  @@index([MemberId], map: "fk_arm_history_arm_members1_idx")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_historypoints {
+  HistoryId          Int      @id @default(autoincrement())
+  depositid          Int
+  MemberId           Int
+  TypeId             Int
+  Credit             Decimal  @db.Decimal(15, 2)
+  Debit              Decimal  @db.Decimal(15, 2)
+  Balance            Decimal  @db.Decimal(15, 2)
+  Description        String   @db.Text
+  TransactionId      String   @db.VarChar(30)
+  PaymentReferenceId String   @db.VarChar(100)
+  paythrough         String   @db.VarChar(50)
+  Status             Boolean
+  DateAdded          DateTime @db.DateTime(0)
+  isDelete           Int      @default(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_hyip {
+  PackageId               Int      @id @default(autoincrement())
+  PackageName             String   @db.VarChar(50)
+  duration                String   @db.VarChar(100)
+  min_amount              String   @db.VarChar(100)
+  max_amount              String   @db.VarChar(100)
+  PackageFee              Decimal  @db.Decimal(10, 2)
+  interest                String   @db.VarChar(11)
+  workingdays             String   @db.VarChar(100)
+  DailyMaximumHyip        Int
+  DailyMaximumPairs       Int
+  OwnCommission           Decimal  @db.Decimal(10, 2)
+  DirectCommission        Decimal  @db.Decimal(10, 2)
+  PairCommissionStatus    Int      @db.TinyInt
+  PairCommission          Decimal  @db.Decimal(10, 2)
+  PairCommissionType      Int
+  MatchingBonus           String   @db.Text
+  MatchingPair            String   @db.Text
+  ProductLevelCommissions String   @db.Text
+  Status                  Boolean  @default(true)
+  DateAdded               DateTime @db.DateTime(0)
+  ModifiedDate            DateTime @db.DateTime(0)
+  hyip                    String   @db.Text
+}
+
+model arm_itags {
+  id             Int      @id @default(autoincrement())
+  imei           String   @db.VarChar(25)
+  mac            String   @db.VarChar(25)
+  fecha_registro DateTime @default(now()) @db.Timestamp(6)
+  placa          String   @db.VarChar(25)
+  num_vehiculo   String   @db.VarChar(25)
+  encargado      String   @db.VarChar(25)
+  empresa        String   @db.VarChar(25)
+  estado         String   @default("0") @db.VarChar(25)
+  MemberId       Int?     @default(0)
+}
+
+model arm_landing_eventos {
+  Id             Int     @id @default(autoincrement())
+  Idevento       Int
+  content        String? @db.Text
+  bg_textcolor   String? @db.Text
+  font_textcolor String? @db.Text
+  bg_formcolor   String? @db.Text
+  font_formcolor String? @db.Text
+}
+
+model arm_landingpage_templates {
+  Id             Int     @id @default(autoincrement())
+  tipo           String? @db.VarChar(20)
+  ecommerce      Int?
+  calificaciones Int?
+  idgrupo        Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_language {
+  LanguageId    Int            @id @default(autoincrement())
+  LanguageName  String         @db.VarChar(100)
+  LanguageCode  String         @db.VarChar(50)
+  LanguageImage String         @db.VarChar(150)
+  Status        Int            @db.TinyInt
+  IsDelete      Int            @default(0) @db.TinyInt
+  arm_cms_page  arm_cms_page[]
+  arm_faq       arm_faq[]
+}
+
+model arm_layout {
+  LayoutId     Int      @id @default(autoincrement())
+  MemberId     Int
+  LayoutName   String   @db.VarChar(64)
+  LayoutType   Boolean
+  Content      String   @db.Text
+  LanguageId   Int
+  LayoutStatus Boolean
+  ViewCount    Int
+  DateAdded    DateTime @db.DateTime(0)
+  DateModified DateTime @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_layout_arm_members1_idx")
+}
+
+model arm_lead_member {
+  LeadId    Int      @id @default(autoincrement())
+  RefId     Int
+  firstname String   @db.VarChar(30)
+  lastname  String   @db.VarChar(30)
+  Email     String   @db.VarChar(255)
+  Phone     String   @db.VarChar(15)
+  Status    Int
+  StartDate DateTime @db.DateTime(0)
+  Ip        String   @db.VarChar(30)
+}
+
+model arm_leadpage {
+  LeadPageId  Int      @id @default(autoincrement())
+  PageName    String   @db.VarChar(150)
+  PageUrl     String   @db.VarChar(150)
+  PageContent String   @db.Text
+  Status      Int      @db.TinyInt
+  PageTitle   String   @db.VarChar(150)
+  MetaContent String   @db.Text
+  MetaKey     String   @db.Text
+  DateAdded   DateTime @db.DateTime(0)
+  IsDelete    Int      @db.TinyInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_mailbox {
+  MailId       Int      @id @default(autoincrement())
+  MemberId     Int
+  SenderId     String   @db.VarChar(50)
+  Subject      String   @db.VarChar(255)
+  Message      String   @db.Text
+  Attatchement String   @db.Text
+  Status       Boolean
+  DateAdded    DateTime @db.DateTime(0)
+  isDelete     Int
+}
+
+model arm_marketing {
+  AdsId          Int                   @id @default(autoincrement())
+  MemberId       Int
+  Content        String                @db.Text
+  AdsType        arm_marketing_AdsType
+  DestinationUrl String                @db.VarChar(255)
+  Counts         Int
+  TotalCounts    Int
+  Status         arm_marketing_Status
+  Comment        String                @db.Text
+  StartDate      DateTime              @db.DateTime(0)
+  EndDate        DateTime              @db.DateTime(0)
+  DateAdded      DateTime              @db.DateTime(0)
+
+  @@index([MemberId], map: "fk_arm_marketing_arm_members1_idx")
+}
+
+model arm_marketingtool {
+  MarketingId        Int                             @id @default(autoincrement())
+  MarketingTitle     String                          @db.VarChar(200)
+  MarketingType      arm_marketingtool_MarketingType
+  MarketingText      String                          @db.Text
+  MarketingImage     String                          @db.VarChar(150)
+  MarketingVideoLink String                          @db.VarChar(150)
+  MarketingDocument  String                          @db.VarChar(100)
+  Status             Int
+  DateAdded          DateTime                        @db.DateTime(0)
+  IsDelete           Int                             @db.TinyInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_matrixsetting {
+  Id                         Int                            @id @default(autoincrement())
+  MatrixName                 String                         @db.VarChar(50)
+  MatrixStatus               Int
+  Path                       String                         @db.VarChar(100)
+  TableName                  String                         @db.VarChar(50)
+  MatrixWidth                Int
+  MatrixDepth                Int
+  Position                   Int
+  ChangeDirect               Int                            @db.TinyInt
+  FreeMember                 Int                            @db.TinyInt
+  RankStatus                 Int                            @db.TinyInt
+  RepeatCommissionStatus     Int                            @db.TinyInt
+  MatrixCommission           Int                            @db.TinyInt
+  DirectCommissionStatus     Int
+  DirectCommissionType       Int
+  LevelCommissionStatus      Int
+  unillevelcommissionsstatus Int                            @db.TinyInt
+  unilevelcommissionstype    Int
+  LevelCommissionType        Int
+  BoardCommissionStatus      Int                            @db.TinyInt
+  BoardCommissionType        Int                            @db.TinyInt
+  RecycleStatus              Int                            @db.TinyInt
+  RecycleCount               Int
+  RecycleCommission          Int
+  RecycleCommissionType      Int
+  SpilloverSystem            Int                            @db.TinyInt
+  EarnCommisionStatus        Int                            @db.TinyInt
+  OwnCommissionStatus        Int                            @db.TinyInt
+  OwnCommissionType          Int                            @db.TinyInt
+  CarryForward               Int
+  CommissionProcess          Int                            @db.TinyInt
+  PvStatus                   Int                            @db.TinyInt
+  MatchingPair               String                         @db.VarChar(10)
+  MTMPayStatus               Int                            @db.TinyInt
+  MatrixUpline               arm_matrixsetting_MatrixUpline @default(dbgenerated("0"))
+  unilevelcommission         String                         @db.Text
+  unilevels                  String                         @db.Text
+}
+
+model arm_transaction_type {
+  TypeId          Int    @id @default(autoincrement())
+  TransactionName String @db.VarChar(50)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_unilevelmatrix {
+  MatrixId    Int      @id @default(autoincrement())
+  MemberId    Int
+  DirectId    Int
+  SpilloverId Int
+  LevelCount  Int
+  MemberCount Int
+  Status      Boolean
+  DateAdded   DateTime @db.DateTime(0)
+}
+
+model arm_user_biography {
+  BiographyId      Int    @id @default(autoincrement())
+  MemberId         Int
+  BiographyContent String @db.Text
+  IsDelete         Int    @db.TinyInt
+}
+
+model arm_user_permission {
+  id          Int    @id @default(autoincrement())
+  UserId      Int
+  UserLevel   Int
+  access_list String @db.Text
+}
+
+model arm_usuario_dependencia {
+  id             Int     @id @default(autoincrement())
+  MemberId       Int?
+  id_dependencia Int?
+  fecha          String? @db.VarChar(100)
+  user           Int?
+}
+
+model arm_validacion_registro {
+  id     Int    @id @default(autoincrement())
+  email  String @db.VarChar(100)
+  codigo Int
+  fecha  String @db.VarChar(50)
+  estado Int
+}
+
+model arm_versiones {
+  Id                  Int    @id @default(autoincrement())
+  Version_number      Int
+  Version_description String @db.Text
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model arm_xupmatrix {
+  MatrixId        Int      @id @default(autoincrement())
+  MemberId        Int
+  DirectId        Int
+  SpilloverId     Int
+  MemberCount     Int
+  XupCount        Int      @default(0)
+  XupStatus       Int      @default(0) @db.TinyInt
+  PassedUpSend    String   @db.Text
+  PassedUpReceive String   @db.Text
+  Status          Boolean  @default(true)
+  DateAdded       DateTime @db.DateTime(0)
+}
+
+model arm_zonas_eventos {
+  id           Int     @id @default(autoincrement())
+  nombre       String? @db.VarChar(100)
+  id_evento    Int
+  geozona      String? @db.Text
+  tipo_geozona String  @db.Text
+  observacion  String? @db.Text
+  radio        String? @db.VarChar(200)
+}
+
+model arm_zone {
+  zone_id    Int     @id @default(autoincrement())
+  country_id Int
+  name       String  @db.VarChar(128)
+  code       String  @db.VarChar(32)
+  status     Boolean @default(true)
+
+  @@index([country_id], map: "fk_arm_zone_arm_country1_idx")
+}
+
+model audit_login {
+  id         Int       @id @default(autoincrement())
+  idusuario  Int?
+  fechalogin DateTime? @default(now()) @db.Timestamp(0)
+  ip_request String?   @db.VarChar(200)
+  estado     Int?      @default(1)
+  bodega     String?   @db.VarChar(100)
+  esoperario Int?      @default(0)
+}
+
+model audotoria_imei {
+  old_imei    String    @db.VarChar(100)
+  new_imei    String    @db.VarChar(50)
+  fecha       DateTime? @default(now()) @db.Timestamp(0)
+  migra_cli   String?   @default("Ok") @db.VarChar(2)
+  migra_histo String?   @default("Ok") @db.VarChar(2)
+  user        String?   @db.VarChar(100)
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+}
+
+model audotoria_login {
+  usuario String    @db.VarChar(200)
+  fecha   DateTime? @default(now()) @db.Timestamp(0)
+  grupo   String?   @default("Ok") @db.VarChar(10)
+  id      Int       @id @default(autoincrement()) @db.UnsignedInt
+}
+
+model audotoria_system {
+  Tipo  String    @db.VarChar(100)
+  fecha DateTime? @default(now()) @db.Timestamp(0)
+  idReg Int?      @default(0)
+  data  String?   @db.Text
+  user  String?   @db.VarChar(100)
+  id    Int       @id @default(autoincrement()) @db.UnsignedInt
+}
+
+model campos_encuestas {
+  Id           Int     @id @default(autoincrement())
+  nombre_campo String? @db.Text
+  tipo_campo   String? @db.VarChar(255)
+  estado       String? @db.VarChar(255)
+}
+
+model cantingplanotxt {
+  Id       Int @id
+  Cantidad Int @default(0)
+  CanReal  Int @default(0)
+}
+
+model categorias {
+  CategoryId    Int                 @id @default(autoincrement())
+  Category      String              @db.VarChar(50)
+  Image         String?             @db.VarChar(255)
+  Description   String              @db.Text
+  ParentId      Int                 @default(0)
+  SortOrder     Int                 @default(0)
+  Status        Boolean
+  DateAdded     DateTime            @db.DateTime(0)
+  DateModified  DateTime            @db.DateTime(0)
+  isDelete      categorias_isDelete @default(dbgenerated("0"))
+  idgrupo       Int?                @default(0)
+  iddependencia Int?                @default(0)
+
+  @@index([ParentId], map: "parentId")
+}
+
+model censos_data {
+  id               Int       @id @default(autoincrement())
+  linea            String?   @db.VarChar(255)
+  grupo            Int?
+  id_cliente       Int?
+  nombre_tipologia String?   @db.VarChar(255)
+  funcion_censo    String?   @db.VarChar(255)
+  valor_censado    String?   @db.Text
+  id_responsable   String?   @db.VarChar(100)
+  fecha_registro   DateTime? @default(now()) @db.Timestamp(0)
+  fecha_dispo      DateTime? @db.DateTime(0)
+
+  @@index([id_cliente], map: "id_cliente_idx")
+}
+
+model censos_datar {
+  id               Int       @id @default(autoincrement())
+  linea            String?   @db.VarChar(255)
+  grupo            Int?
+  id_cliente       Int?
+  nombre_tipologia String?   @db.VarChar(255)
+  funcion_censo    String?   @db.VarChar(255)
+  valor_censado    String?   @db.Text
+  id_responsable   String?   @db.VarChar(100)
+  fecha_registro   DateTime? @default(now()) @db.Timestamp(0)
+  fecha_dispo      DateTime? @db.DateTime(0)
+
+  @@index([id_cliente], map: "id_cliente_idx")
+}
+
+model chat_sockets {
+  id         Int     @id @default(autoincrement())
+  user       String  @db.VarChar(255)
+  msg        String  @db.Text
+  origen     String  @db.VarChar(20)
+  nomorigen  String  @db.VarChar(200)
+  destino    String  @db.VarChar(20)
+  nomdestino String  @db.VarChar(50)
+  tipo       String  @db.VarChar(200)
+  time       Int     @default(0)
+  estado     String? @db.Char(1)
+}
+
+model ci_sessions {
+  id         String  @db.VarChar(128)
+  ip_address String  @db.VarChar(45)
+  timestamp  Int     @default(0) @db.UnsignedInt
+  data       Bytes?  @db.Blob
+  user_agent String? @db.VarChar(120)
+
+  @@id([id, ip_address])
+  @@index([timestamp], map: "ci_sessions_timestamp")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model claves {
+  Funcion String @db.VarChar(40)
+  Clave   String @db.VarChar(80)
+
+  @@ignore
+}
+
+model doc_tco {
+  id           Int       @id @default(autoincrement())
+  Empresa      String    @db.VarChar(100)
+  fecha        DateTime? @default(now()) @db.Timestamp(0)
+  Nombre       String    @unique(map: "Nombre") @db.VarChar(200)
+  Origen       String    @db.VarChar(120)
+  TipoVehiculo String?   @db.VarChar(100)
+  Placa        String?   @db.VarChar(100)
+  Hora_Inicio  String?   @map("Hora-Inicio") @db.VarChar(100)
+  Hora_Fin     String?   @map("Hora-Fin") @db.VarChar(100)
+  bol_estado   String?   @default("1") @db.VarChar(1)
+}
+
+model doc_teb {
+  id           Int       @id @default(autoincrement())
+  Empresa      String    @db.VarChar(100)
+  fecha        DateTime? @default(now()) @db.Timestamp(0)
+  Nombre       String    @unique(map: "Nombre") @db.VarChar(200)
+  Origen       String    @db.VarChar(120)
+  TipoVehiculo String?   @db.VarChar(100)
+  Placa        String?   @db.VarChar(100)
+  Hora_Inicio  String?   @map("Hora-Inicio") @db.VarChar(100)
+  Hora_Fin     String?   @map("Hora-Fin") @db.VarChar(100)
+  bol_estado   String?   @default("1") @db.VarChar(1)
+}
+
+model doc_traslado {
+  id          Int       @default(autoincrement())
+  Empresa     String    @db.VarChar(100)
+  fecha       DateTime? @default(now()) @db.Timestamp(0)
+  Nombre      String    @db.VarChar(200)
+  Origen      String    @db.VarChar(120)
+  Hora_Inicio String?   @map("Hora-Inicio") @db.VarChar(100)
+  Hora_Fin    String?   @map("Hora-Fin") @db.VarChar(100)
+  Placa       String?   @db.VarChar(100)
+  Usuario     String    @db.VarChar(100)
+  Observacion String?   @db.VarChar(300)
+  bol_estado  String?   @default("1") @db.VarChar(1)
+
+  @@id([id, Empresa])
+}
+
+model docingresoconsecutivo {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  nombre    String   @db.VarChar(200)
+  tipo      String   @db.VarChar(100)
+  fecha     DateTime @default(now()) @db.Timestamp(0)
+  estado    String   @default("1") @db.VarChar(2)
+  numero    Int
+  empresa   String   @default("") @db.VarChar(200)
+  proveedor String?  @default("") @db.VarChar(200)
+  operario  String?  @db.Text
+
+  @@index([numero], map: "numero")
+}
+
+model empresa_dependencia {
+  id             Int     @id @default(autoincrement())
+  id_empresa     Int?
+  id_dependencia Int?
+  fecha          String? @db.VarChar(100)
+  user           Int?    @default(1)
+}
+
+model empresa_web {
+  id                  Int     @id @default(autoincrement())
+  nombreweb           String? @db.VarChar(200)
+  email               String? @db.VarChar(100)
+  telefono            String? @db.VarChar(100)
+  telefono2           String? @db.VarChar(100)
+  direccion           String? @db.VarChar(200)
+  estado              String? @default("0") @db.VarChar(100)
+  id_empresa          Int?    @default(0)
+  fecharegistro       String? @db.VarChar(100)
+  responsable         String? @db.VarChar(150)
+  descripcion         String? @db.Text
+  idgrupo_oportuna    Int?    @default(0)
+  color_panel         String? @default("#5c0d5b") @db.VarChar(50)
+  color_boton_primary String? @default("#5c0d5b") @db.VarChar(50)
+  color_menu          String? @default("#5c0d5b") @db.VarChar(50)
+  color_fuente_body   String? @default("#4b4b4b") @db.VarChar(50)
+  color_title         String? @default("#5c0d5b") @db.VarChar(50)
+  modulo_crm          String? @default("0") @db.Char(1)
+  tienda_principal    Int?    @default(0)
+  modulo_marketplace  Int?    @default(0)
+}
+
+model empresaweb {
+  id                  Int      @id @default(autoincrement())
+  nombreweb           String?  @db.VarChar(200)
+  email               String?  @db.VarChar(100)
+  telefono            String?  @db.VarChar(100)
+  telefono2           String?  @db.VarChar(100)
+  direccion           String?  @db.VarChar(200)
+  estado              String?  @default("0") @db.VarChar(100)
+  id_empresa          Int?     @default(0)
+  fecharegistro       String?  @db.VarChar(100)
+  responsable         String?  @db.VarChar(150)
+  descripcion         String?  @db.Text
+  idgrupo_oportuna    Int?     @default(0)
+  color_panel         String?  @default("#5c0d5b") @db.VarChar(50)
+  color_boton_primary String?  @default("#5c0d5b") @db.VarChar(50)
+  color_menu          String?  @default("#5c0d5b") @db.VarChar(50)
+  color_fuente_body   String?  @default("#4b4b4b") @db.VarChar(50)
+  color_title         String?  @default("#5c0d5b") @db.VarChar(50)
+  modulo_crm          String?  @default("0") @db.Char(1)
+  created_at          DateTime @default(now()) @db.Timestamp(0)
+  updated_at          DateTime @default(now()) @db.Timestamp(0)
+}
+
+model eventos {
+  id             Int     @default(autoincrement()) @db.UnsignedInt
+  title          String? @db.VarChar(150)
+  body           String  @db.Text
+  url            String  @db.VarChar(150)
+  class          String  @default("event-important") @db.VarChar(45)
+  start          String  @db.VarChar(15)
+  end            String  @db.VarChar(15)
+  id_grupo       Int?    @default(2)
+  id_usuario     Int?    @default(48)
+  nombres        String? @db.VarChar(255)
+  telefono       String? @db.VarChar(11)
+  email          String? @db.VarChar(255)
+  id_dependencia Int?    @default(0)
+  transaction    String  @db.VarChar(200)
+  id_evento      Int?    @default(0)
+  ip_user        String? @default("000.000.000") @db.VarChar(80)
+
+  @@id([id, transaction])
+}
+
+model eventos_google_calendar {
+  Id                       Int       @id @default(autoincrement())
+  title                    String?   @db.VarChar(255)
+  description              String?   @db.Text
+  location                 String?   @db.VarChar(255)
+  date                     DateTime? @db.Date
+  time_from                DateTime? @db.Time(0)
+  time_to                  DateTime? @db.Time(0)
+  google_calendar_event_id String?   @db.VarChar(255)
+  created                  DateTime? @db.Date
+}
+
+model fotos_premios {
+  id               Int       @default(autoincrement())
+  id_evento_premio Int?
+  imagen           String    @default("") @db.VarChar(100)
+  fecha            DateTime? @default(now()) @db.Timestamp(0)
+  memberId         Int?
+  lat              String?   @default("0") @db.VarChar(100)
+  lng              String?   @default("0") @db.VarChar(100)
+  id_form          Int?      @default(0)
+  id_linea         Int?      @default(0)
+  id_premio        Int?      @default(0)
+  iddependencia    Int       @default(0)
+  idgrupo          Int       @default(0)
+  ip_user          String?   @default("000.000.000") @db.VarChar(30)
+  transaction      String    @db.VarChar(200)
+
+  @@id([id, transaction])
+}
+
+model funcion_tipologia {
+  id       Int     @id @default(autoincrement())
+  Nombre   String  @db.VarChar(100)
+  Valor    String  @db.VarChar(100)
+  Opciones String? @db.VarChar(600)
+}
+
+model gcm_usuarios {
+  username String @id @db.VarChar(100)
+  gcmcode  String @db.VarChar(500)
+}
+
+model google_users {
+  id         Int       @id @default(autoincrement())
+  email      String    @db.VarChar(128)
+  name       String    @db.VarChar(128)
+  photo      String?   @db.VarChar(255)
+  registered DateTime? @default(now()) @db.Timestamp(0)
+  MemberId   Int
+  tipouser   String    @db.VarChar(100)
+}
+
+model grupos {
+  id                     Int      @id @default(autoincrement()) @db.UnsignedInt
+  idgrupo                Int?
+  img                    String?  @default("1.png") @db.VarChar(100)
+  singular               String?  @default("Operario") @db.VarChar(100)
+  plural                 String?  @default("Operarios") @db.VarChar(100)
+  lebel_cli              String?  @default("Ubicacion") @db.VarChar(100)
+  lebel_cli_plu          String?  @default("Ubicaciones") @db.VarChar(100)
+  bgcolor                String?  @default("#ffffff") @db.VarChar(10)
+  fontcolor              String?  @default("#626262") @db.VarChar(10)
+  menucolor              String?  @default("#ffffff") @db.VarChar(10)
+  bgtextura              String?  @default("0") @db.Char(1)
+  lebel_observacion      String?  @default("Detalles") @db.VarChar(100)
+  lebel_campo            String?  @default("Codigos") @db.VarChar(100)
+  leyenda1_movil         String?  @default("Operarios") @db.VarChar(100)
+  leyenda2_movil         String?  @default("Ubicaciones") @db.VarChar(100)
+  leyenda3_movil         String?  @default("Observacion") @db.VarChar(100)
+  leyendabtn_movil       String?  @default("Aceptar") @db.VarChar(100)
+  tipo_busqueda_movil    Int?     @default(2)
+  bgcolor_movil          String?  @default("#ffffff") @db.VarChar(100)
+  fontcolor_movil        String?  @default("#565656") @db.VarChar(100)
+  menucolor_movil        String?  @default("#0035ff") @db.VarChar(100)
+  ecommerce              Int?     @default(0)
+  wallet                 Int?     @default(0)
+  landing                Int?     @default(0)
+  torretransporte        Int?     @default(0)
+  torreinventario        Int?     @default(0)
+  menubgcolor_movil      String?  @db.VarChar(100)
+  botonesbgcolor_movil   String?  @db.VarChar(100)
+  botonesfontcolor_movil String?  @db.VarChar(100)
+  leyenda1_movil_inicio  String?  @db.VarChar(100)
+  leyenda2_movil_inicio  String?  @db.VarChar(100)
+  leyenda3_movil_inicio  String?  @db.VarChar(100)
+  leyenda1_movil_boton1  String?  @db.VarChar(100)
+  leyenda2_movil_boton1  String?  @db.VarChar(100)
+  leyenda3_movil_boton1  String?  @db.VarChar(100)
+  leyenda1_movil_amigos  String?  @db.VarChar(100)
+  leyenda2_movil_amigos  String?  @db.VarChar(100)
+  leyenda1_movil_agregar String?  @db.VarChar(100)
+  leyenda2_movil_agregar String?  @db.VarChar(100)
+  leyenda3_movil_agregar String?  @db.VarChar(100)
+  leyenda1_movil_perfil  String?  @db.VarChar(100)
+  leyenda2_movil_perfil  String?  @db.VarChar(100)
+  leyenda3_movil_perfil  String?  @db.VarChar(100)
+  leyenda4_movil_perfil  String?  @db.VarChar(100)
+  leyenda5_movil_perfil  String?  @db.VarChar(100)
+  lebel_funcio           String?  @db.VarChar(255)
+  lebel_funcio_plu       String?  @db.VarChar(255)
+  estado                 String?  @default("0") @db.Char(1)
+  created_at             DateTime @default(now()) @db.Timestamp(0)
+  updated_at             DateTime @default(now()) @db.Timestamp(0)
+}
+
+model historial_ciclico {
+  id              Int     @id @default(autoincrement())
+  Ubicacion       String? @db.VarChar(100)
+  Descripcion     String? @db.VarChar(200)
+  Remision        String? @db.VarChar(100)
+  Cantidad        Float?  @db.Float
+  RemisionCiclica String? @db.VarChar(200)
+  Fecha           String? @db.VarChar(100)
+  TipoCiclo       String? @db.VarChar(100)
+  Dependencia     String? @db.VarChar(200)
+}
+
+model infobateria {
+  unique_id    Int      @id @unique(map: "unique_id") @default(autoincrement())
+  vendedor     String   @db.VarChar(200)
+  porcentajebt String   @db.VarChar(200)
+  fechareg     String   @db.VarChar(200)
+  fecha        DateTime @default(now()) @db.Timestamp(0)
+
+  @@unique([vendedor, fechareg], map: "claveunica")
+  @@index([vendedor], map: "vendedor")
+}
+
+model infobateria2 {
+  unique_id    Int      @id @unique(map: "unique_id") @default(autoincrement())
+  vendedor     String   @db.VarChar(200)
+  porcentajebt String   @db.VarChar(200)
+  fechareg     String   @db.VarChar(200)
+  fecha        DateTime @default(now()) @db.Timestamp(0)
+
+  @@index([vendedor], map: "vendedor")
+}
+
+model infobateriatt {
+  unique_id    Int      @id @unique(map: "unique_id") @default(autoincrement())
+  vendedor     String   @db.VarChar(200)
+  porcentajebt String   @db.VarChar(200)
+  fechareg     String   @db.VarChar(200)
+  fecha        DateTime @default(now()) @db.Timestamp(0)
+
+  @@index([vendedor], map: "vendedor")
+}
+
+model ingpedido {
+  Id             Int     @id @default(autoincrement())
+  Cliente        String  @db.VarChar(80)
+  Fecha          String  @db.VarChar(80)
+  Codigo         String  @db.VarChar(80)
+  Descripcion    String  @db.VarChar(80)
+  Detalle        String? @db.VarChar(80)
+  Lote           String? @db.VarChar(80)
+  FechaVen       String? @db.VarChar(80)
+  Cantidad       Float   @default(0)
+  RemisionC      String  @default("0") @db.VarChar(80)
+  id_transitorio Int?
+}
+
+model ingpedido_historial {
+  Id             Int     @id @default(autoincrement())
+  Cliente        String  @db.VarChar(80)
+  Fecha          String  @db.VarChar(80)
+  Codigo         String  @db.VarChar(80)
+  Descripcion    String  @db.VarChar(80)
+  Detalle        String? @db.VarChar(80)
+  Lote           String? @db.VarChar(80)
+  FechaVen       String? @db.VarChar(80)
+  Cantidad       Float   @default(0)
+  RemisionC      String  @default("0") @db.VarChar(80)
+  id_transitorio Int?
+}
+
+model ingplano {
+  Id             Int     @id @default(autoincrement())
+  Cliente        String  @db.VarChar(80)
+  Fecha          String  @db.VarChar(80)
+  Codigo         String  @db.VarChar(80)
+  Descripcion    String  @db.VarChar(80)
+  Detalle        String? @db.VarChar(80)
+  Lote           String? @db.VarChar(80)
+  FechaVen       String? @db.VarChar(80)
+  Cantidad       Float   @default(0)
+  RemisionC      String  @db.VarChar(80)
+  fact_empaque   Int?    @default(0)
+  unidades       Float?  @default(0)
+  id_transitorio Int?
+}
+
+model ingplano_historial {
+  Id             Int     @id @default(autoincrement())
+  Cliente        String  @db.VarChar(80)
+  Fecha          String  @db.VarChar(80)
+  Codigo         String  @db.VarChar(80)
+  Descripcion    String  @db.VarChar(80)
+  Detalle        String? @db.VarChar(80)
+  Lote           String? @db.VarChar(80)
+  FechaVen       String? @db.VarChar(80)
+  Cantidad       Float   @default(0)
+  RemisionC      String  @db.VarChar(80)
+  fact_empaque   Int?    @default(0)
+  unidades       Float?  @default(0)
+  id_transitorio Int?
+}
+
+model lineas {
+  id          Int     @id @default(autoincrement())
+  descripcion String? @db.VarChar(255)
+  activa      Int?    @default(1)
+  encuesta    Int?    @default(1)
+  combinada   Int?    @default(0)
+  control     String? @db.Text
+}
+
+model lineas_cliente {
+  id          Int     @id @default(autoincrement())
+  descripcion String? @db.VarChar(255)
+  grupo       Int?
+}
+
+model lineas_cliente_tipos {
+  id          Int     @id @default(autoincrement())
+  descripcion String? @db.VarChar(255)
+  grupo       Int?
+  observacion String? @default("") @db.VarChar(255)
+  linea       String? @default("") @db.VarChar(255)
+}
+
+model lineas_grupos {
+  id            Int     @id @default(autoincrement())
+  descripcion   String? @db.VarChar(255)
+  encuesta      Int?
+  idlinea       Int?
+  nombrelinea   String? @db.VarChar(255)
+  cliente       Int?    @default(0)
+  idgrupo       Int?
+  iddependencia Int?    @default(0)
+}
+
+model lineas_grupos_tipos {
+  id            Int     @id @default(autoincrement())
+  descripcion   String? @db.VarChar(255)
+  observacion   String? @db.VarChar(255)
+  linea         String? @db.VarChar(255)
+  id_linea      Int?
+  id_tipologia  Int?
+  Nombre_campo  String? @db.VarChar(255)
+  tipo          Int?
+  cliente       Int?    @default(0)
+  idgrupo       Int?
+  iddependencia Int?    @default(0)
+}
+
+model mensaj {
+  id     Int      @id @default(autoincrement())
+  movil  String   @db.VarChar(50)
+  estado String   @default("1") @db.VarChar(1)
+  fecha  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model mensajc {
+  id     Int      @id @default(autoincrement())
+  movil  String   @db.VarChar(50)
+  estado String   @default("1") @db.VarChar(2)
+  fecha  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model movimiento {
+  Id           Int      @id @default(autoincrement())
+  Fecha        DateTime @default(now()) @db.Timestamp(0)
+  Cliente      String   @db.VarChar(255)
+  Descripcion  String   @db.VarChar(255)
+  Cantidad     Float
+  Ubicacion    String   @db.VarChar(255)
+  Remision     String   @db.VarChar(100)
+  Movimiento   String?  @default("") @db.VarChar(255)
+  Observacion  String?  @db.VarChar(255)
+  EstadoSale   String?  @default("") @db.VarChar(200)
+  NumeroPed    String?  @db.VarChar(50)
+  Usuario      String?  @db.Char(50)
+  Anula        String?  @default("1") @db.Char(5)
+  RemisionC    String?  @db.VarChar(100)
+  RemisionS    String?  @db.VarChar(100)
+  SobreD       String?  @default(" ") @db.VarChar(200)
+  unidades     Float?   @default(0)
+  fact_empaque Int?     @default(0)
+  lote         String?  @default("") @db.VarChar(100)
+  fecha_vence  String?  @default("") @db.VarChar(100)
+  Novedad      String?  @default("") @db.VarChar(250)
+  plataforma   String?  @default("app") @db.VarChar(100)
+}
+
+model municipios {
+  id              BigInt @id @default(autoincrement())
+  departamento_id BigInt
+  codigo          Int
+  nombre          String @db.VarChar(255)
+
+  @@index([departamento_id], map: "departamento_id")
+}
+
+model observacion_documentos {
+  id          Int       @id @default(autoincrement())
+  Descripcion String?   @db.VarChar(100)
+  Usuario     String?   @db.VarChar(100)
+  Cliente     String?   @db.VarChar(100)
+  Fecha       DateTime? @default(now()) @db.Timestamp(0)
+  Estado      String?   @default("0") @db.Char(1)
+  Grupo       Int?      @default(0)
+  Tipo        String?   @default("DOC_INGRESOS") @db.VarChar(50)
+}
+
+model observacion_ingresos {
+  id          Int       @id @default(autoincrement())
+  Descripcion String?   @db.VarChar(100)
+  Usuario     String?   @db.VarChar(100)
+  Cliente     String?   @db.VarChar(100)
+  Fecha       DateTime? @default(now()) @db.Timestamp(0)
+  Estado      String?   @default("0") @db.Char(1)
+  Grupo       Int?      @default(0)
+  Tipo        String?   @default("Ingresos") @db.VarChar(30)
+}
+
+model observacion_salidas {
+  id          Int       @id @default(autoincrement())
+  Descripcion String?   @db.VarChar(100)
+  Usuario     String?   @db.VarChar(100)
+  Cliente     String?   @db.VarChar(100)
+  Fecha       DateTime? @default(now()) @db.Timestamp(0)
+  Estado      String?   @default("0") @db.Char(1)
+  Grupo       Int?      @default(0)
+  Tipo        String?   @default("Ingresos") @db.VarChar(30)
+}
+
+model observacion_traslados {
+  id          Int       @id @default(autoincrement())
+  Descripcion String?   @db.VarChar(100)
+  Usuario     String?   @db.VarChar(100)
+  Cliente     String?   @db.VarChar(100)
+  Fecha       DateTime? @default(now()) @db.Timestamp(0)
+  Estado      String?   @default("0") @db.Char(1)
+  Grupo       Int?      @default(0)
+  Tipo        String?   @default("Ingresos") @db.VarChar(30)
+}
+
+model pages {
+  Id          Int     @id @default(autoincrement())
+  idgrupo     Int
+  namegrupo   String? @db.Text
+  page        String? @db.Text
+  pagetitle   String? @db.VarChar(255)
+  pagecontent String? @db.Text
+  pagestatus  Int?
+}
+
+model pedidos {
+  id          Int     @id @default(autoincrement())
+  MemberId    Int?
+  Documento   String? @db.VarChar(100)
+  Direccion   String? @db.VarChar(200)
+  Lat         String? @db.VarChar(200)
+  Lng         String? @db.VarChar(200)
+  IdDocumento Int?
+  Observacion String? @db.Text
+  Estado      String? @default("0") @db.Char(1)
+  Fecha       String? @db.VarChar(100)
+}
+
+model permisos_usuarios {
+  id                              Int      @id @default(autoincrement())
+  idusuario                       Int?
+  per_add_cliente                 Boolean? @default(true)
+  per_edit_cliente                Boolean? @default(true)
+  per_add_documento               Boolean? @default(true)
+  per_edit_documento              Boolean? @default(true)
+  per_consult_saldos              Boolean? @default(true)
+  per_consult_movimientos         Boolean? @default(true)
+  per_elimina_movimientos         Boolean? @default(true)
+  per_add_despacho                Boolean? @default(true)
+  per_consult_despacho            Boolean? @default(true)
+  per_consult_gps                 Boolean? @default(true)
+  per_add_pedido                  Boolean? @default(true)
+  per_edit_pedido                 Boolean? @default(true)
+  per_consult_transit             Boolean? @default(true)
+  per_edit_transit                Boolean? @default(true)
+  per_consult_ubicacion           Boolean? @default(true)
+  per_add_inventario              Boolean? @default(true)
+  per_edit_inventario             Boolean? @default(true)
+  per_consult_factura             Boolean? @default(true)
+  per_add_factura                 Boolean? @default(true)
+  per_edit_reglas_cobro           Boolean? @default(false)
+  per_consult_usuarios            Boolean? @default(true)
+  per_edit_usuarios               Boolean? @default(true)
+  per_consult_reporte             Boolean? @default(false)
+  per_import_cliente              Boolean? @default(false)
+  per_delete_cliente              Boolean? @default(false)
+  per_superadmin                  Boolean? @default(false)
+  per_consult_pedido              Boolean? @default(true)
+  per_delete_usuarios             Boolean? @default(false)
+  per_operario_ingresos           Boolean? @default(true)
+  per_operario_salidas            Boolean? @default(true)
+  per_operario_stock              Boolean? @default(true)
+  per_operario_ubicar             Boolean? @default(true)
+  per_operario_transitorio        Boolean? @default(true)
+  per_operario_asignado           Boolean? @default(true)
+  per_operario_crea_documentos    Boolean? @default(true)
+  per_operario_certifica_despacho Boolean? @default(true)
+  per_operario_ubicaporproduc     Boolean? @default(true)
+  per_operario_clave              Boolean? @default(false)
+  per_operario_inventario         Boolean? @default(false)
+  per_productos                   Boolean?
+  per_procesos                    Boolean?
+  per_servicios                   Boolean?
+  per_torre                       Boolean? @default(true)
+}
+
+model persona {
+  idpersona Int     @id @default(autoincrement())
+  Apellidos String  @db.VarChar(80)
+  Nombres   String  @db.VarChar(80)
+  Email     String  @db.VarChar(80)
+  Telefono  String? @db.VarChar(80)
+}
+
+model presentacion_kit {
+  id          Int       @id @default(autoincrement())
+  Descripcion String?   @db.VarChar(100)
+  Usuario     String?   @db.VarChar(100)
+  Cliente     String?   @db.VarChar(100)
+  Fecha       DateTime? @default(now()) @db.Timestamp(0)
+  Estado      String?   @default("0") @db.Char(1)
+  Grupo       Int?      @default(0)
+  Tipo        String?   @default("Combo") @db.VarChar(30)
+}
+
+model product {
+  id          Int    @id @default(autoincrement()) @db.UnsignedInt
+  name        String @db.VarChar(100)
+  price       Float
+  sale_price  Float
+  sales_count Int    @db.UnsignedInt
+  sale_date   String @db.VarChar(20)
+}
+
+model productos_eliminados {
+  id          Int     @id @default(autoincrement())
+  id_producto Int?
+  codigo      String? @db.VarChar(200)
+  descripcion String? @db.VarChar(200)
+  dependencia String? @db.VarChar(100)
+  fecha       String? @db.VarChar(100)
+  id_user     Int?
+}
+
+model productos_pendientes {
+  id          Int     @id @default(autoincrement())
+  Codigo      String? @db.VarChar(100)
+  Descripcion String? @db.VarChar(100)
+  C_I         String? @db.VarChar(100)
+  Cantidad    Float?  @default(0)
+  Usuario     String? @db.VarChar(100)
+  Empresa     String? @db.VarChar(100)
+  Fecha       String? @db.VarChar(100)
+  Aprobo      String? @db.VarChar(100)
+  Estado      String? @default("0") @db.Char(1)
+}
+
+model products {
+  ProductId     Int               @id @default(autoincrement())
+  CatId         Int
+  ProductType   Int
+  File          String            @db.Text
+  ProductName   String            @db.VarChar(50)
+  Description   String            @db.Text
+  Quantity      Int
+  StockStatusId Int
+  Image         String            @db.Text
+  Price         Decimal           @db.Decimal(15, 0)
+  PriceDiscount Decimal?          @default(0) @db.Decimal(15, 0)
+  salesprice    Decimal           @db.Decimal(15, 0)
+  TaxClassId    Int
+  Weight        Decimal           @db.Decimal(15, 4)
+  Height        Decimal           @db.Decimal(15, 4)
+  Length        Decimal           @db.Decimal(15, 4)
+  DisplyShop    Boolean           @default(true)
+  AutoShip      Boolean           @default(false)
+  iSentrole     Boolean           @default(false)
+  Viewed        Int
+  Attributes    String            @db.Text
+  WeightClassId Int
+  LengthClassId Int
+  Type          Boolean
+  Shipping      Int
+  Points        Int
+  Status        Boolean
+  DateAdded     DateTime          @db.DateTime(0)
+  ModifiedDate  DateTime          @db.DateTime(0)
+  isDelete      products_isDelete @default(dbgenerated("0"))
+  idgrupo       Int?              @default(0)
+  IMG_URL       String?           @default("") @db.VarChar(200)
+  lu_categoria  String?           @default("Ticket") @db.VarChar(100)
+  id_wms        Int?              @default(0)
+  Origen        String?           @db.VarChar(100)
+  id_empresa    Int?
+  created_at    DateTime          @default(now()) @db.Timestamp(0)
+  updated_at    DateTime          @default(now()) @db.Timestamp(0)
+  arm_category  arm_category      @relation(fields: [CatId], references: [CategoryId], onDelete: NoAction, onUpdate: NoAction, map: "products_ibfk_1")
+
+  @@index([CatId], map: "fk_arm_product_arm_category1_idx")
+}
+
+model registro {
+  unique_id    Int       @id @unique(map: "unique_id") @default(autoincrement())
+  cliente      String    @db.VarChar(255)
+  vendedor     String    @db.VarChar(100)
+  observa      String    @db.Text
+  lat          String    @db.VarChar(200)
+  lng          String    @db.VarChar(200)
+  fecha        DateTime  @db.DateTime(0)
+  tiempo       String    @db.VarChar(200)
+  tipo         String?   @default("") @db.VarChar(100)
+  baterialevel String?   @default("0") @db.VarChar(10)
+  fechaserver  DateTime? @default(now()) @db.Timestamp(0)
+  otrocampo    String?   @default("") @db.VarChar(255)
+  idCliente    Int?      @default(0)
+
+  @@index([vendedor], map: "vedeindex")
+}
+
+model registro_cli_sinc {
+  unique_id         Int       @id @unique(map: "unique_id") @default(autoincrement()) @db.UnsignedInt
+  cliente           String    @db.VarChar(100)
+  vendedor          String    @db.VarChar(100)
+  direccion         String    @db.VarChar(200)
+  lat               String    @default("0") @db.VarChar(200)
+  lng               String    @default("0") @db.VarChar(200)
+  telefono          String    @db.VarChar(200)
+  mail              String    @db.VarChar(200)
+  geodireccion      String?   @default("") @db.VarChar(255)
+  fecha_creacion    DateTime? @default(now()) @db.Timestamp(0)
+  linea             String?   @default("") @db.VarChar(255)
+  tipoCli           String?   @db.VarChar(255)
+  nombreContac      String?   @default("") @db.VarChar(255)
+  numeroCelular     String?   @default("") @db.VarChar(255)
+  correoElectronico String?   @default("") @db.VarChar(255)
+  idGrupo           Int?      @default(0)
+  nombre_vende      String?   @default("") @db.VarChar(255)
+  estado_censo      Int?      @default(0)
+}
+
+model registro_last_location {
+  unique_id   Int       @id @unique(map: "unique_id") @default(autoincrement()) @db.UnsignedInt
+  vendedor    String    @db.VarChar(100)
+  lat         String    @default("0") @db.VarChar(200)
+  lng         String    @default("0") @db.VarChar(200)
+  observacion String    @db.VarChar(200)
+  fecha       DateTime  @db.DateTime(0)
+  fechaserver DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model roles_permisos {
+  id                  Int      @id @default(autoincrement()) @db.UnsignedInt
+  iduser              Int?
+  per_historico       Boolean? @default(false)
+  per_vendedores_list Boolean? @default(false)
+  per_vendedores_edit Boolean? @default(false)
+  per_vendedores_crea Boolean? @default(false)
+  per_clientes_list   Boolean? @default(false)
+  per_clientes_edit   Boolean? @default(false)
+  per_clientes_crea   Boolean? @default(false)
+  per_clientes_load   Boolean? @default(false)
+  per_report          Boolean? @default(false)
+  per_admin_consulta  Boolean? @default(false)
+  per_admin_creauser  Boolean? @default(false)
+  per_report_cli      Boolean? @default(false)
+  per_report_ven      Boolean? @default(false)
+  per_elimin_visit    Boolean? @default(false)
+  per_clientes_files  Boolean? @default(false)
+  per_mensajes_ven    Boolean? @default(false)
+  per_agenda          Boolean? @default(false)
+  per_gps_all         Boolean? @default(false)
+  per_tipologia_cli   Boolean? @default(false)
+  per_torre           Boolean? @default(false)
+  per_dependencia     Boolean? @default(false)
+  per_ingresos        Boolean? @default(false)
+  per_salidas         Boolean? @default(false)
+  per_listauserweb    Boolean? @default(false)
+  per_bodegas         Boolean? @default(false)
+  per_agenda_citas    Boolean? @default(false)
+}
+
+model shoutbox1 {
+  id      Int      @id @default(autoincrement())
+  date    DateTime @default(now()) @db.Timestamp(0)
+  user    String   @default("anonimous") @db.VarChar(25)
+  message String   @default("") @db.VarChar(255)
+  para    String   @db.VarChar(255)
+}
+
+model tareas_operario {
+  id           Int       @id @default(autoincrement())
+  fecha        DateTime? @default(now()) @db.Timestamp(0)
+  Tipo         String?   @db.VarChar(100)
+  documento    String?   @db.VarChar(100)
+  fechafin     DateTime? @db.Timestamp(0)
+  estado       Boolean?  @default(true)
+  operario     String?   @db.VarChar(100)
+  cantidad     Float?
+  status_close Int?      @default(1)
+  dependencia  String?   @db.VarChar(100)
+  tipo_doc     String?   @db.VarChar(100)
+}
+
+model tbl_alertas {
+  id           Int    @id @default(autoincrement()) @db.UnsignedInt
+  mensaje      String @db.VarChar(200)
+  destinatario String @db.VarChar(200)
+  tipo         String @db.VarChar(10)
+  horaini      String @db.VarChar(100)
+  horafin      String @db.VarChar(100)
+  vendedor     String @db.VarChar(100)
+  periodo      Int
+  estado       String @db.VarChar(10)
+}
+
+model tbl_codes {
+  mcodeMatrix  String?   @db.VarChar(255)
+  mcodeHex     String?   @db.VarChar(255)
+  mcodeDecimal String?   @db.VarChar(255)
+  mcodeUrl     String?   @db.VarChar(255)
+  fecha        DateTime? @default(now()) @db.Timestamp(0)
+  cell         String?   @db.VarChar(20)
+  estado       String?   @default("1") @db.VarChar(2)
+  id           Int       @id @default(autoincrement())
+}
+
+model tbl_importcliente {
+  id          Int    @id @default(autoincrement()) @db.UnsignedInt
+  codigoub    String @unique(map: "codigo") @db.VarChar(100)
+  cliente     String @db.VarChar(200)
+  descripcion String @db.VarChar(200)
+  observacion String @db.VarChar(200)
+  cantidad    Int
+}
+
+model tbl_importubica {
+  id          Int    @id @default(autoincrement()) @db.UnsignedInt
+  codigoub    String @db.VarChar(100)
+  cliente     String @db.VarChar(200)
+  descripcion String @db.VarChar(200)
+  observacion String @db.VarChar(200)
+  cantidad    Int
+}
+
+model tbl_movi_doc {
+  id             Int      @id @default(autoincrement())
+  facha          DateTime @default(now()) @db.Timestamp(0)
+  orden_salida   String   @db.VarChar(150)
+  Empresa        String   @default("DISCONFITES S.A") @db.VarChar(200)
+  Descripcion    String   @db.VarChar(255)
+  Cantidad       Float
+  estado         String   @default("1") @db.VarChar(1)
+  id_alista      Int
+  Cant_solicitud Float
+  tipodoc        String?  @db.VarChar(100)
+  consecutivo    Int?
+  descmotivodoc  String?  @db.VarChar(255)
+  cargue         String?  @db.VarChar(255)
+  rowiddoc       String?  @db.VarChar(100)
+}
+
+model tbl_noreservas {
+  id                 Int       @id @default(autoincrement()) @db.UnsignedInt
+  fecha              DateTime? @default(now()) @db.Timestamp(0)
+  cliente            String?   @default("DISCONFITES S.A") @db.VarChar(200)
+  id_reserva         String    @unique(map: "consecutivoreserva") @db.VarChar(200)
+  fechades           DateTime? @db.Timestamp(0)
+  usuario            String?   @default("Automatico") @db.VarChar(100)
+  estado             String?   @default("1") @db.VarChar(2)
+  tipodoc            String?   @db.VarChar(100)
+  consecutivo        Int?
+  descripconceptodoc String?   @db.VarChar(100)
+  cargue             String?   @db.VarChar(255)
+  operario           String?   @db.VarChar(255)
+}
+
+model tbl_reservas {
+  id             Int      @id @default(autoincrement())
+  facha          DateTime @default(now()) @db.Timestamp(0)
+  orden_salida   String   @db.VarChar(150)
+  Empresa        String   @default("DISCONFITES S.A") @db.VarChar(200)
+  Descripcion    String   @db.VarChar(255)
+  Cantidad       Float
+  estado         String   @default("1") @db.VarChar(1)
+  id_alista      Int
+  Cant_solicitud Float
+  tipodoc        String?  @db.VarChar(100)
+  consecutivo    Int?
+  descmotivodoc  String?  @db.VarChar(255)
+  cargue         String?  @db.VarChar(255)
+  rowiddoc       String?  @db.VarChar(100)
+  idtarea        Int?     @default(0)
+}
+
+model tbl_solicitud_reserva {
+  id             Int      @id @default(autoincrement()) @db.UnsignedInt
+  fecha          DateTime @default(now()) @db.Timestamp(0)
+  nombre         String   @db.VarChar(200)
+  tercero        String   @db.VarChar(200)
+  tipomerca      String   @db.VarChar(100)
+  noestibas      Int      @default(0)
+  valormerca     String   @db.VarChar(100)
+  listaempaque   String   @db.VarChar(10)
+  unidadcobro    String   @db.VarChar(255)
+  unidadalmacena String   @db.VarChar(255)
+  inforcliente   String   @db.VarChar(255)
+  observaciones  String   @db.VarChar(255)
+  conductor      String   @db.VarChar(200)
+  estado         Int      @default(1)
+}
+
+model tblpermisos {
+  id                         Int      @id @default(autoincrement())
+  iduser                     Int?
+  per_torre                  Boolean? @default(false)
+  per_historial              Boolean? @default(false)
+  per_listar_operario        Boolean? @default(false)
+  per_editar_operario        Boolean? @default(false)
+  per_eliminar_operario      Boolean? @default(false)
+  per_listar_ubicacion       Boolean? @default(false)
+  per_listar_documentos      Boolean? @default(false)
+  per_crear_documentos       Boolean? @default(false)
+  per_eliminar_documentos    Boolean? @default(false)
+  per_listar_inventario      Boolean? @default(false)
+  per_eliminar_inventario    Boolean? @default(false)
+  per_reset_inventario       Boolean? @default(false)
+  per_crear_inventario       Boolean? @default(false)
+  per_editar_inventario      Boolean? @default(false)
+  per_importarcsv_inventario Boolean? @default(false)
+  per_productos_pendientes   Boolean? @default(false)
+  per_reportes               Boolean? @default(false)
+  per_listar_usuarios        Boolean? @default(false)
+  per_editar_usuarios        Boolean? @default(false)
+  per_eliminar_usuarios      Boolean? @default(false)
+  per_crear_usuarios         Boolean? @default(false)
+  per_listar_empresas        Boolean? @default(false)
+  per_editar_empresas        Boolean? @default(false)
+  per_eliminar_empresas      Boolean? @default(false)
+  per_crear_empresas         Boolean? @default(false)
+  per_listar_dependencias    Boolean? @default(false)
+  per_editar_dependencias    Boolean? @default(false)
+  per_eliminar_dependencias  Boolean? @default(false)
+  per_crear_dependencias     Boolean? @default(false)
+  per_listar_bodegas         Boolean? @default(false)
+  per_editar_bodegas         Boolean? @default(false)
+  per_eliminar_bodegas       Boolean? @default(false)
+  per_crear_bodegas          Boolean? @default(false)
+  per_chat                   Boolean? @default(false)
+}
+
+model tblusuarios {
+  idUsuario          Int     @id @default(autoincrement())
+  nick               String  @db.Char(20)
+  pass               String  @db.Char(32)
+  mail               String  @db.Char(100)
+  telefono           String  @db.Char(32)
+  nombre             String  @db.Char(100)
+  grupo              String  @db.Char(100)
+  ip                 String  @db.Char(15)
+  estado             String? @default("0") @db.Char(1)
+  fecharegistro      String? @db.VarChar(100)
+  dependencias       String? @db.Text
+  superuser          Int?    @default(0)
+  idusuario_oportuna Int?    @default(0)
+  idgrupo_oportuna   Int?    @default(0)
+  acceso_grupo       Int?    @default(0)
+
+  @@index([nick, pass], map: "nick")
+}
+
+model tcalendario {
+  id     Int      @id @default(autoincrement())
+  fecha  DateTime @db.Date
+  evento String   @db.Text
+}
+
+model template_config_landingpage {
+  Id            Int     @id @default(autoincrement())
+  idlandingpage String? @db.Text
+  idgrupo       Int?
+  menuop1       String? @db.Text
+  menuop2       String? @db.Text
+  menuop3       String? @db.Text
+  menuop4       String? @db.Text
+  menuop5       String? @db.Text
+  seccion1      String? @db.Text
+  seccion2      String? @db.Text
+  seccion3      String? @db.Text
+  seccion4      String? @db.Text
+  seccion5      String? @db.Text
+  wspop         Int?
+  wspnumero     String? @db.Text
+  contador      Int?
+}
+
+model tipo_producto {
+  id          Int       @id @default(autoincrement())
+  Descripcion String?   @db.VarChar(100)
+  Usuario     String?   @db.VarChar(100)
+  Cliente     String?   @db.VarChar(100)
+  Fecha       DateTime? @default(now()) @db.Timestamp(0)
+  Estado      String?   @default("0") @db.Char(1)
+  Grupo       Int?      @default(0)
+}
+
+model tipologia_visitas {
+  id          Int     @id @default(autoincrement())
+  descripcion String? @db.VarChar(255)
+  grupo       Int?
+  observacion String? @default("") @db.VarChar(255)
+  nombrecampo String? @default("") @db.VarChar(255)
+  id_funcion  Int?
+}
+
+model tipologia_visitas2 {
+  id          Int     @id @default(autoincrement())
+  descripcion String? @db.VarChar(255)
+  grupo       Int?
+  observacion String? @default("") @db.VarChar(255)
+}
+
+model transitorio_ciclico {
+  id                  Int       @id @default(autoincrement())
+  idusuarioreg        String?   @db.VarChar(255)
+  idusuarioub         Int?
+  empresa             String?   @db.VarChar(255)
+  remision            String?   @db.VarChar(255)
+  producto            String?   @db.VarChar(255)
+  ubicacion           String?   @db.VarChar(255)
+  cantidad            Float?
+  observaciones       String?   @db.VarChar(255)
+  lote                String?   @db.VarChar(200)
+  fechavence          String?   @db.VarChar(200)
+  observageneral      String?   @db.VarChar(255)
+  descripcionproducto String?   @db.VarChar(255)
+  unidades            Float?
+  fact_empaque        Int?
+  fecha_reg           DateTime? @default(now()) @db.Timestamp(0)
+  estado_aplica       Boolean?  @default(true)
+}
+
+model transitorio_derivado {
+  id                  Int     @id @default(autoincrement())
+  idusuarioreg        String? @db.VarChar(255)
+  idusuarioub         Int?
+  empresa             String? @db.VarChar(255)
+  remision            String? @db.VarChar(255)
+  producto            String? @db.VarChar(255)
+  ubicacion           String? @db.VarChar(255)
+  cantidad            Float?
+  observaciones       String? @db.VarChar(255)
+  lote                String? @db.VarChar(200)
+  fechavence          String? @db.VarChar(200)
+  observageneral      String? @db.VarChar(255)
+  descripcionproducto String? @db.VarChar(255)
+  unidades            Float?
+  fact_empaque        Int?
+  valor_declarado     Float?  @default(0) @db.Float
+}
+
+model transitorio_inventario {
+  id                  Int       @id @default(autoincrement())
+  idusuarioreg        String?   @db.VarChar(255)
+  idusuarioub         Int?
+  empresa             String?   @db.VarChar(255)
+  remision            String?   @db.VarChar(255)
+  producto            String?   @db.VarChar(255)
+  ubicacion           String?   @db.VarChar(255)
+  cantidad            Int?
+  observaciones       String?   @db.VarChar(255)
+  lote                String?   @db.VarChar(200)
+  fechavence          String?   @db.VarChar(200)
+  observageneral      String?   @db.VarChar(255)
+  descripcionproducto String?   @db.VarChar(255)
+  unidades            Int?
+  fact_empaque        Int?
+  fecha_reg           DateTime? @default(now()) @db.Timestamp(0)
+  cont2               Int?      @default(0)
+  cont3               Int?      @default(0)
+  cont4               Int?      @default(0)
+  cont5               Int?      @default(0)
+  estado_aplica       Boolean?  @default(true)
+}
+
+model transitorio_sin_codigo {
+  id                  Int       @id @default(autoincrement())
+  idusuarioreg        String?   @db.VarChar(255)
+  idusuarioub         Int?
+  empresa             String?   @db.VarChar(255)
+  remision            String?   @db.VarChar(255)
+  producto            String?   @db.VarChar(255)
+  ubicacion           String?   @db.VarChar(255)
+  cantidad            Float?
+  observaciones       String?   @db.VarChar(255)
+  lote                String?   @db.VarChar(200)
+  fechavence          String?   @db.VarChar(200)
+  observageneral      String?   @db.VarChar(255)
+  descripcionproducto String?   @db.VarChar(255)
+  unidades            Float?
+  fact_empaque        Int?
+  fecha_reg           DateTime? @default(now()) @db.Timestamp(0)
+  estado              Int?      @default(1)
+}
+
+model turnos_operario {
+  id       Int      @id @default(autoincrement())
+  operario String?  @db.VarChar(100)
+  turno    Int?
+  estado   Boolean? @default(true)
+  tipoOpe  String?  @default("Alturas") @db.VarChar(100)
+}
+
+model ubicar {
+  Codigo      String  @unique(map: "ubicar_idx") @db.VarChar(100)
+  Ubicacion   String  @id @db.VarChar(100)
+  Cliente     String? @db.VarChar(255)
+  Descripcion String? @db.VarChar(255)
+  Remision    String? @db.VarChar(80)
+  Observacion String? @db.VarChar(255)
+  Cantidad    Float?
+  Despacho    String? @default("0") @db.VarChar(2)
+  Lote        String? @default("") @db.VarChar(255)
+  NMovimiento String? @db.VarChar(40)
+  Vence       String? @default("") @db.VarChar(40)
+  SobreD      String? @db.VarChar(20)
+  sufix       Int?    @default(1)
+}
+
+model users {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name              String
+  email             String    @unique(map: "users_email_unique")
+  email_verified_at DateTime? @db.Timestamp(0)
+  password          String
+  remember_token    String?   @db.VarChar(100)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+  google_id         String?   @db.VarChar(255)
+}
+
+model usuario {
+  idusuario         Int     @default(autoincrement())
+  usuario           String  @db.VarChar(45)
+  contrasena        String  @db.VarChar(80)
+  rol               String  @db.VarChar(60)
+  Empresa           String  @db.VarChar(80)
+  Bodega            String  @db.VarChar(80)
+  persona_idpersona Int
+  estado            Int     @default(1)
+  dependencias      String? @db.Text
+  grupo             Int?
+  fecha_registro    String? @db.VarChar(100)
+
+  @@id([idusuario, usuario, contrasena])
+  @@index([persona_idpersona], map: "fk_usuario_persona")
+}
+
+model usuarios {
+  username         String   @db.VarChar(100)
+  passw            String   @db.VarChar(50)
+  idgrupo_oportuna Int      @default(0)
+  estado           Boolean? @default(true)
+  id               Int      @id @default(autoincrement()) @db.UnsignedInt
+}
+
+model usuarios_config {
+  id                     Int      @id @default(autoincrement()) @db.UnsignedInt
+  idgrupo                Int?
+  img                    String?  @default("1.png") @db.VarChar(100)
+  singular               String?  @default("Operario") @db.VarChar(100)
+  plural                 String?  @default("Operarios") @db.VarChar(100)
+  lebel_cli              String?  @default("Ubicacion") @db.VarChar(100)
+  lebel_cli_plu          String?  @default("Ubicaciones") @db.VarChar(100)
+  bgcolor                String?  @default("#ffffff") @db.VarChar(10)
+  fontcolor              String?  @default("#626262") @db.VarChar(10)
+  menucolor              String?  @default("#ffffff") @db.VarChar(10)
+  bgtextura              String?  @default("0") @db.Char(1)
+  lebel_observacion      String?  @default("Detalles") @db.VarChar(100)
+  lebel_campo            String?  @default("Codigos") @db.VarChar(100)
+  leyenda1_movil         String?  @default("Operarios") @db.VarChar(100)
+  leyenda2_movil         String?  @default("Ubicaciones") @db.VarChar(100)
+  leyenda3_movil         String?  @default("Observacion") @db.VarChar(100)
+  leyendabtn_movil       String?  @default("Aceptar") @db.VarChar(100)
+  tipo_busqueda_movil    Int?     @default(2)
+  bgcolor_movil          String?  @default("#ffffff") @db.VarChar(100)
+  fontcolor_movil        String?  @default("#565656") @db.VarChar(100)
+  menucolor_movil        String?  @default("#0035ff") @db.VarChar(100)
+  ecommerce              Int?     @default(0)
+  wallet                 Int?     @default(0)
+  landing                Int?     @default(0)
+  torretransporte        Int?     @default(0)
+  torreinventario        Int?     @default(0)
+  menubgcolor_movil      String?  @db.VarChar(100)
+  botonesbgcolor_movil   String?  @db.VarChar(100)
+  botonesfontcolor_movil String?  @db.VarChar(100)
+  leyenda1_movil_inicio  String?  @db.VarChar(100)
+  leyenda2_movil_inicio  String?  @db.VarChar(100)
+  leyenda3_movil_inicio  String?  @db.VarChar(100)
+  leyenda1_movil_boton1  String?  @db.VarChar(100)
+  leyenda2_movil_boton1  String?  @db.VarChar(100)
+  leyenda3_movil_boton1  String?  @db.VarChar(100)
+  leyenda1_movil_amigos  String?  @db.VarChar(100)
+  leyenda2_movil_amigos  String?  @db.VarChar(100)
+  leyenda1_movil_agregar String?  @db.VarChar(100)
+  leyenda2_movil_agregar String?  @db.VarChar(100)
+  leyenda3_movil_agregar String?  @db.VarChar(100)
+  leyenda1_movil_perfil  String?  @db.VarChar(100)
+  leyenda2_movil_perfil  String?  @db.VarChar(100)
+  leyenda3_movil_perfil  String?  @db.VarChar(100)
+  leyenda4_movil_perfil  String?  @db.VarChar(100)
+  leyenda5_movil_perfil  String?  @db.VarChar(100)
+  lebel_funcio           String?  @db.VarChar(255)
+  lebel_funcio_plu       String?  @db.VarChar(255)
+  estado                 String?  @default("0") @db.Char(1)
+  created_at             DateTime @default(now()) @db.Timestamp(0)
+  updated_at             DateTime @default(now()) @db.Timestamp(0)
+}
+
+model usuariosg {
+  username  String   @db.VarChar(100)
+  passw     String   @db.VarChar(50)
+  idusuario String   @default("2") @db.VarChar(100)
+  estado    Boolean? @default(true)
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+}
+
+model wms_insumos {
+  Descripcion  String?  @db.VarChar(100)
+  IdProd       String?  @db.VarChar(100)
+  Presentacion String?  @db.VarChar(100)
+  CPalet       String?  @default("0") @db.VarChar(20)
+  Cantidad     Int?     @default(0)
+  Id           Int      @id @default(autoincrement())
+  IdCombo      Int
+  Cliente      String   @db.VarChar(100)
+  Fecha        DateTime @default(now()) @db.Timestamp(0)
+
+  @@index([IdCombo], map: "IDCOMBO")
+}
+
+model wms_ordenes {
+  Id                  Int      @default(autoincrement())
+  Remision            String   @db.VarChar(100)
+  txtnumregistro      String?  @default("") @db.VarChar(100)
+  Cliente             String?  @db.VarChar(100)
+  txtnombrecliente    String?  @default("") @db.VarChar(100)
+  txtdireccioncliente String?  @default("") @db.VarChar(200)
+  txtcontactocliente  String?  @default("") @db.VarChar(200)
+  txttelefonocliente  String?  @default("") @db.VarChar(100)
+  fechasolicitud      String?  @db.VarChar(100)
+  txtnombrecond       String?  @default("") @db.VarChar(200)
+  txtplaca            String?  @default("") @db.VarChar(50)
+  txtobservaciones    String?  @db.Text
+  txtnombredestino    String?  @default("") @db.VarChar(200)
+  txttelefonodestino  String?  @default("") @db.VarChar(100)
+  txtciudaddestino    String?  @default("") @db.VarChar(100)
+  txtcontactodestino  String?  @default("") @db.VarChar(200)
+  txtpicking          String?  @default("") @db.VarChar(100)
+  txttrasnportadora   String?  @default("") @db.VarChar(150)
+  Fecha               DateTime @default(now()) @db.Timestamp(0)
+  consecutivo         Int
+  tipo_doc            String   @db.VarChar(100)
+
+  @@id([Id, Remision])
+}
+
+model ws_imagenes {
+  id            Int      @id @default(autoincrement())
+  IdSolicitud   Int?
+  Imagen        String?  @db.VarChar(255)
+  IdPreRegistro Int?
+  estado        Boolean? @default(true)
+}
+
+model ws_preregistro {
+  id                   Int       @id @default(autoincrement())
+  PreRegistro          Int?
+  CedulaCliente        String?   @db.VarChar(100)
+  NombreCliente        String?   @db.VarChar(255)
+  FNacimientoCliente   String?   @db.VarChar(100)
+  FExpedicionCliente   String?   @db.VarChar(100)
+  Telefono1Cliente     String?   @db.VarChar(20)
+  Telefono2Cliente     String?   @db.VarChar(20)
+  ExtensionCliente     String?   @db.VarChar(20)
+  Celular1Cliente      String?   @db.VarChar(20)
+  Celular2Cliente      String?   @db.VarChar(20)
+  DeptoCliente         String?   @db.VarChar(255)
+  CiudadCliente        String?   @db.VarChar(255)
+  BarrioCliente        String?   @db.VarChar(255)
+  DireccionCliente     String?   @db.VarChar(255)
+  ReferenciaCliente    String?   @db.VarChar(255)
+  GerenteZona          String?   @db.VarChar(255)
+  CedulaCodeudor       String?   @db.VarChar(20)
+  NombreCodeudor       String?   @db.VarChar(255)
+  DocumentoGerenteZona String?   @db.VarChar(100)
+  estado               Boolean?  @default(true)
+  fechacreacion        DateTime? @default(now()) @db.Timestamp(0)
+  idgrupo              Int?      @default(18)
+}
+
+model ws_preregistro_ {
+  id                   Int       @id @default(autoincrement())
+  PreRegistro          Int?
+  CedulaCliente        String?   @db.VarChar(100)
+  NombreCliente        String?   @db.VarChar(255)
+  FNacimientoCliente   String?   @db.VarChar(100)
+  FExpedicionCliente   String?   @db.VarChar(100)
+  Telefono1Cliente     String?   @db.VarChar(20)
+  Telefono2Cliente     String?   @db.VarChar(20)
+  ExtensionCliente     String?   @db.VarChar(20)
+  Celular1Cliente      String?   @db.VarChar(20)
+  Celular2Cliente      String?   @db.VarChar(20)
+  DeptoCliente         String?   @db.VarChar(255)
+  CiudadCliente        String?   @db.VarChar(255)
+  BarrioCliente        String?   @db.VarChar(255)
+  DireccionCliente     String?   @db.VarChar(255)
+  ReferenciaCliente    String?   @db.VarChar(255)
+  GerenteZona          String?   @db.VarChar(255)
+  CedulaCodeudor       String?   @db.VarChar(20)
+  NombreCodeudor       String?   @db.VarChar(255)
+  DocumentoGerenteZona String?   @db.VarChar(100)
+  estado               Boolean?  @default(true)
+  fechacreacion        DateTime? @default(now()) @db.Timestamp(0)
+}
+
+enum arm_banned_Status {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_marketingtool_MarketingType {
+  text
+  image
+  video
+  document
+}
+
+enum arm_marketing_AdsType {
+  Image
+  Content
+  Video
+  Document
+}
+
+enum arm_banned_isDelete {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_marketing_Status {
+  Deleted
+  Active
+  publish
+  UnPublish
+}
+
+enum arm_category_isDelete {
+  zero @map("0")
+  one @map("1")
+}
+
+enum categorias_isDelete {
+  zero @map("0")
+  one @map("1")
+}
+
+enum products_isDelete {
+  zero @map("0")
+  one @map("1")
+}
+
+enum arm_matrixsetting_MatrixUpline {
+  zero @map("0")
+  one @map("1")
+}
